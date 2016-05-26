@@ -16,10 +16,7 @@
 
 import Kitura
 import KituraNet
-import LoggerAPI
 import Credentials
-
-import SwiftyJSON
 
 import Foundation
 
@@ -39,29 +36,27 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
     public var usersCache : NSCache?
 #endif
 
-    private var verifyCallback : (String, String?, ((UserProfile?, String?) -> Void)) -> Void
+    private var verifyCallback : VerifyCallback
     
-    public var realm = "Users"
+    public var realm : String
     
-    public init (verify: (String, String?, ((UserProfile?, String?) -> Void)) -> Void, realm: String?=nil) {
+    public init (verify: VerifyCallback, realm: String?=nil) {
         verifyCallback = verify
-        if let realm = realm {
-            self.realm = realm
-        }
+        self.realm = realm ?? "Users"
     }
     
     public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue],                            onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
         
         var authorization : String
-        if let userinfo = request.params["userinfo"] {
+        if let userinfo = request.parsedUrl.userinfo {
             authorization = userinfo
         }
         else {
             guard request.headers["Authorization"] != nil,
                 let authorizationHeader = request.headers["Authorization"] where
-                authorizationHeader.bridge().components(separatedBy: " ")[0] == "Basic",
-                let decodedData = NSData(base64Encoded: authorizationHeader.bridge().components(separatedBy: " ")[1], options:NSDataBase64DecodingOptions(rawValue: 0)),
-                let userAuthorization = NSString(data: decodedData, encoding: NSUTF8StringEncoding) else {
+                authorizationHeader.components(separatedBy: " ")[0] == "Basic",
+                let decodedData = NSData(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options:NSDataBase64DecodingOptions(rawValue: 0)),
+                let userAuthorization = String(data: decodedData, encoding: NSUTF8StringEncoding) else {
                 onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                 return
             }
@@ -69,18 +64,15 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
             authorization = userAuthorization as String
         }
         
-        // bridge????
-        let credentials = authorization.bridge().components(separatedBy: ":")
+        let credentials = authorization.components(separatedBy: ":")
         guard credentials.count >= 2 else {
             onFailure(.badRequest, nil)
             return
         }
         
-        // Is it possible there is some unrelated userinfo and also Authorization header????
-        
         let userid = credentials[0]
         let password = credentials[1]        
-                
+        
         let cacheElement = usersCache!.object(forKey: (userid+password).bridge()) // bridge???
         #if os(Linux)
             if let cached = cacheElement as? BaseCacheElement {
@@ -95,8 +87,8 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         #endif
 
         
-        verifyCallback(userid, password) { userProfile, _ in // error???
-            if let userProfile = userProfile {
+        verifyCallback(userId: userid) { userProfile, storedPassword in
+            if let userProfile = userProfile where storedPassword == password {
                 onSuccess(userProfile)
             }
             else {
@@ -104,4 +96,6 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
             }
         }
     }
+    
+    public typealias VerifyCallback = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
 }
