@@ -58,8 +58,9 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         }
         else {
             guard request.headers["Authorization"] != nil,
-                let decodedAuthorization = request.headers["Authorization"],
-                let decodedData = NSData(base64Encoded: decodedAuthorization as String, options:NSDataBase64DecodingOptions(rawValue: 0)),
+                let authorizationHeader = request.headers["Authorization"] where
+                authorizationHeader.bridge().components(separatedBy: " ")[0] == "Basic",
+                let decodedData = NSData(base64Encoded: authorizationHeader.bridge().components(separatedBy: " ")[1], options:NSDataBase64DecodingOptions(rawValue: 0)),
                 let userAuthorization = NSString(data: decodedData, encoding: NSUTF8StringEncoding) else {
                 onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                 return
@@ -79,7 +80,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         
         let userid = credentials[0]
         let password = credentials[1]        
-        
+                
         let cacheElement = usersCache!.object(forKey: (userid+password).bridge()) // bridge???
         #if os(Linux)
             if let cached = cacheElement as? BaseCacheElement {
