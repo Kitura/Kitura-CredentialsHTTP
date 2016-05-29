@@ -11,6 +11,7 @@ A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credential
 
 ## Table of Contents
 * [Swift version](#swift-version)
+* [API](#api)
 * [Example](#example)
 * [License](#license)
 
@@ -19,11 +20,11 @@ The latest version of Kitura-CredentialsHttpBasic works with the DEVELOPMENT-SNA
 
 ## API
 
-To create an instance of CredentialsHttpBasic plugin a `userProfileLoader` callback function and an optional realm should be passed to the constructor:
+To create an instance of CredentialsHttpBasic plugin, a `UserProfileLoader` function and an optional realm should be passed to the constructor:
 ```swift
 public init (userProfileLoader: UserProfileLoader, realm: String?=nil)
 ```
-`userProfileLoader` callback should be of type:
+`userProfileLoader` function should be of type:
 ```swift
 public typealias UserProfileLoader = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
 ```
