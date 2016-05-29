@@ -73,7 +73,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         let userid = credentials[0]
         let password = credentials[1]        
         
-        let cacheElement = usersCache!.object(forKey: (userid+password).bridge()) // bridge???
+        let cacheElement = usersCache!.object(forKey: (userid+password).bridge())
         #if os(Linux)
             if let cached = cacheElement as? BaseCacheElement {
                 onSuccess(cached.userProfile)
@@ -88,7 +88,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
 
         
         verifyCallback(userId: userid) { userProfile, storedPassword in
-            if let userProfile = userProfile where storedPassword == password {
+            if let userProfile = userProfile, let storedPassword = storedPassword where storedPassword == password {
                 onSuccess(userProfile)
             }
             else {
