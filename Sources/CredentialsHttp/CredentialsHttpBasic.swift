@@ -45,7 +45,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         self.realm = realm ?? "Users"
     }
     
-    public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue],                            onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
+    public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
         
         var authorization : String
         if let userinfo = request.parsedUrl.userinfo {
@@ -89,6 +89,8 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         
         userProfileLoader(userId: userid) { userProfile, storedPassword in
             if let userProfile = userProfile, let storedPassword = storedPassword where storedPassword == password {
+                let newCacheElement = BaseCacheElement(profile: userProfile)
+                self.usersCache!.setObject(newCacheElement, forKey: (userid+password).bridge())
                 onSuccess(userProfile)
             }
             else {
