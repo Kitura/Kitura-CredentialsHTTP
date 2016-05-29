@@ -35,7 +35,7 @@ It receives user id, and calls `callback` with `UserProfile` instance and passwo
 This example shows how to use this plugin to authenticate requests with HTTP Basic authentication.
 <br>
 
-First create an instance of `Credentials` and an instance of `CredentialsHttpBasic` plugin, supplying a verify callback:
+First create an instance of `Credentials` and an instance of `CredentialsHttpBasic` plugin, supplying a `UserProfileLoader` function:
 
 ```swift
 import Credentials
@@ -43,7 +43,7 @@ import CredentialsHttp
 
 let credentials = Credentials()
 let users = ["John" : "12345", "Mary" : "qwerasdf"]
-let basicCredentials = CredentialsHttpBasic(verify: { userId, callback in
+let basicCredentials = CredentialsHttpBasic(userProfileLoader: { userId, callback in
     if let storedPassword = users[userId] {
         callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpBasic"), password: storedPassword)
     }
