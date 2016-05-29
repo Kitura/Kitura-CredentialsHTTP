@@ -17,7 +17,7 @@ At the moment only HTTP Basic authentication is implemented.
 * [License](#license)
 
 ## Swift version
-The latest version of Kitura-CredentialsGoogleToken works with the DEVELOPMENT-SNAPSHOT-2016-05-03-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of Kitura-CredentialsHttpBasic works with the DEVELOPMENT-SNAPSHOT-2016-05-03-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## API
 
@@ -27,7 +27,7 @@ public init (verify: VerifyCallback, realm: String?=nil)
 ```
 Verify callback should be of type:
 ```swift
-    public typealias VerifyCallback = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
+public typealias VerifyCallback = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
 ```
 It receives user id, and calls `callback` with `UserProfile` instance and password that correspond to the user id, or `nil` if such user id doesn't exist.
 
@@ -60,7 +60,7 @@ credentials.register(plugin: basicCredentials)
 
 Connect `credentials` middleware to profile requests:
 ```swift
-router.all("/profile", middleware: apiCredentials)
+router.all("/profile", middleware: credentials)
 ```
 If the authentication is successful, `request.userProfile` will contain user profile information:
 ```swift
