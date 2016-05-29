@@ -29,19 +29,19 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
     public var redirecting: Bool {
         return false
     }
-
-#if os(OSX)
+    
+    #if os(OSX)
     public var usersCache : NSCache<NSString, BaseCacheElement>?
-#else
+    #else
     public var usersCache : NSCache?
-#endif
-
-    private var verifyCallback : VerifyCallback
+    #endif
+    
+    private var userProfileLoader : UserProfileLoader
     
     public var realm : String
     
-    public init (verify: VerifyCallback, realm: String?=nil) {
-        verifyCallback = verify
+    public init (userProfileLoader: UserProfileLoader, realm: String?=nil) {
+        self.userProfileLoader = userProfileLoader
         self.realm = realm ?? "Users"
     }
     
@@ -57,10 +57,10 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
                 authorizationHeader.components(separatedBy: " ")[0] == "Basic",
                 let decodedData = NSData(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options:NSDataBase64DecodingOptions(rawValue: 0)),
                 let userAuthorization = String(data: decodedData, encoding: NSUTF8StringEncoding) else {
-                onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
-                return
+                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                    return
             }
-
+            
             authorization = userAuthorization as String
         }
         
@@ -71,7 +71,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
         }
         
         let userid = credentials[0]
-        let password = credentials[1]        
+        let password = credentials[1]
         
         let cacheElement = usersCache!.object(forKey: (userid+password).bridge())
         #if os(Linux)
@@ -85,9 +85,9 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
                 return
             }
         #endif
-
         
-        verifyCallback(userId: userid) { userProfile, storedPassword in
+        
+        userProfileLoader(userId: userid) { userProfile, storedPassword in
             if let userProfile = userProfile, let storedPassword = storedPassword where storedPassword == password {
                 onSuccess(userProfile)
             }
@@ -96,6 +96,4 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
             }
         }
     }
-    
-    public typealias VerifyCallback = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
 }

@@ -1,15 +1,13 @@
 # Kitura-CredentialsHttp
-A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic or Digest authentication
+A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic authentication
 
 ![Mac OS X](https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 
 ## Summary
-A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credentials) framework that authenticates using HTTP Basic or Digest authentication.
+A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credentials) framework that authenticates using HTTP Basic authentication.
 
-<br>
-At the moment only HTTP Basic authentication is implemented.
 
 ## Table of Contents
 * [Swift version](#swift-version)
@@ -21,13 +19,13 @@ The latest version of Kitura-CredentialsHttpBasic works with the DEVELOPMENT-SNA
 
 ## API
 
-To create an instance of CredentialsHttpBasic plugin a verify callback function and an optional realm should be passed to the constructor:
+To create an instance of CredentialsHttpBasic plugin a `userProfileLoader` callback function and an optional realm should be passed to the constructor:
 ```swift
-public init (verify: VerifyCallback, realm: String?=nil)
+public init (userProfileLoader: UserProfileLoader, realm: String?=nil)
 ```
-Verify callback should be of type:
+`userProfileLoader` callback should be of type:
 ```swift
-public typealias VerifyCallback = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
+public typealias UserProfileLoader = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
 ```
 It receives user id, and calls `callback` with `UserProfile` instance and password that correspond to the user id, or `nil` if such user id doesn't exist.
 
@@ -74,8 +72,6 @@ router.get("/profile", handler:
       next()
 })
 ```
-
-
 
 ## License
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE.txt).
