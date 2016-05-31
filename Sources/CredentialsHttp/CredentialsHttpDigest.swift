@@ -139,7 +139,7 @@ public class CredentialsHttpDigest : CredentialsPluginProtocol {
 
         var result = [String:String]()
         for token in tokens {
-            let nsString = token as NSString
+            let nsString = NSString(string: token)
             do {
                 let regex = try NSRegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
                 let matches = regex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
@@ -158,7 +158,7 @@ public class CredentialsHttpDigest : CredentialsPluginProtocol {
         var result = [String]()
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: [])
-            let nsString = originalString as NSString
+            let nsString = NSString(string: originalString)
             var start = 0
             while true {
                 let results = regex.rangeOfFirstMatch(in: originalString, options: [], range: NSMakeRange(start, nsString.length - start))
