@@ -128,22 +128,6 @@ class TestDigest : XCTestCase {
                 next()
         })
         
-        router.error { request, response, next in
-            response.headers["Content-Type"] = "text/html; charset=utf-8"
-            do {
-                let errorDescription: String
-                if let error = response.error {
-                    errorDescription = "\(error)"
-                }
-                else {
-                    errorDescription = ""
-                }
-                try response.send("Caught the error: \(errorDescription)").end()
-            }
-            catch {}
-            next()
-        }
-        
         return router
     }
 }

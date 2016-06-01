@@ -63,7 +63,7 @@ class TestBasic : XCTestCase {
                 }, headers: ["Authorization" : "Basic QWxhZGRpbjpPcGVuU2VzYW1l"])
         }
     }
-
+    
     func testBasic() {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/api/data", callback: {response in
@@ -77,10 +77,10 @@ class TestBasic : XCTestCase {
                     XCTFail("No response body")
                 }
                 expectation.fulfill()
-            }, headers: ["Authorization" : "Basic TWFyeTpxd2VyYXNkZg=="])
+                }, headers: ["Authorization" : "Basic TWFyeTpxd2VyYXNkZg=="])
         }
     }
-
+    
     static func setupRouter() -> Router {
         let router = Router()
         
@@ -93,9 +93,9 @@ class TestBasic : XCTestCase {
             else {
                 callback(userProfile: nil, password: nil)
             }
-        }, realm: "test")
+            }, realm: "test")
         apiCredentials.register(plugin: basicCredentials)
-
+        
         let digestCredentials = CredentialsHttpDigest(userProfileLoader: { userId, callback in
             if let storedPassword = users[userId] {
                 callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpDigest"), password: storedPassword)
@@ -106,7 +106,7 @@ class TestBasic : XCTestCase {
             }, realm: "Kitura-users", opaque: "0a0b0c0d")
         
         apiCredentials.register(plugin: digestCredentials)
-
+        
         router.all("/private/*", middleware: BodyParser())
         router.all("/private/api", middleware: apiCredentials)
         router.get("/private/api/data", handler:
@@ -125,22 +125,6 @@ class TestBasic : XCTestCase {
                 catch {}
                 next()
         })
-
-        router.error { request, response, next in
-            response.headers["Content-Type"] = "text/html; charset=utf-8"
-            do {
-                let errorDescription: String
-                if let error = response.error {
-                    errorDescription = "\(error)"
-                }
-                else {
-                    errorDescription = ""
-                }
-                try response.send("Caught the error: \(errorDescription)").end()
-            }
-            catch {}
-            next()
-        }
         
         return router
     }
