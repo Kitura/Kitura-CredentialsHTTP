@@ -64,7 +64,7 @@ public class CredentialsHttpDigest : CredentialsPluginProtocol {
         guard let credentials = CredentialsHttpDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))) where credentials.count > 0,
             let userid = credentials["username"],
             let credentialsRealm = credentials["realm"] where credentialsRealm == realm,
-            let credentialsURI = credentials["uri"] where credentialsURI == request.originalUrl,
+            let credentialsURI = credentials["uri"] where credentialsURI == request.originalURL,
             let credentialsNonce = credentials["nonce"],
             let credentialsCNonce = credentials["cnonce"],
             let credentialsNC = credentials["nc"],
