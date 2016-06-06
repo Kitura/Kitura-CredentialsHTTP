@@ -26,7 +26,7 @@ import Credentials
 
 class TestBasic : XCTestCase {
     
-    static var allTests : [(String, TestBasic -> () throws -> Void)] {
+    static var allTests : [(String, (TestBasic) -> () throws -> Void)] {
         return [
                    ("testNoCredentials", testNoCredentials),
                    ("testBadCredentials", testBadCredentials),
