@@ -22,7 +22,7 @@ import KituraNet
 import KituraSys
 import Credentials
 
-@testable import CredentialsHttp
+@testable import CredentialsHTTP
 
 class TestBasic : XCTestCase {
     
@@ -86,7 +86,7 @@ class TestBasic : XCTestCase {
         
         let apiCredentials = Credentials()
         let users = ["John" : "12345", "Mary" : "qwerasdf"]
-        let basicCredentials = CredentialsHttpBasic(userProfileLoader: { userId, callback in
+        let basicCredentials = CredentialsHTTPBasic(userProfileLoader: { userId, callback in
             if let storedPassword = users[userId] {
                 callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpBasic"), password: storedPassword)
             }
@@ -96,7 +96,7 @@ class TestBasic : XCTestCase {
             }, realm: "test")
         apiCredentials.register(plugin: basicCredentials)
         
-        let digestCredentials = CredentialsHttpDigest(userProfileLoader: { userId, callback in
+        let digestCredentials = CredentialsHTTPDigest(userProfileLoader: { userId, callback in
             if let storedPassword = users[userId] {
                 callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpDigest"), password: storedPassword)
             }

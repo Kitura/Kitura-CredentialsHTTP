@@ -22,10 +22,10 @@ import Cryptor
 
 import Foundation
 
-public class CredentialsHttpDigest : CredentialsPluginProtocol {
+public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     public var name : String {
-        return "HttpDigest"
+        return "HTTPDigest"
     }
     
     public var redirecting: Bool {
@@ -61,7 +61,7 @@ public class CredentialsHttpDigest : CredentialsPluginProtocol {
             return
         }
         
-        guard let credentials = CredentialsHttpDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))) where credentials.count > 0,
+        guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))) where credentials.count > 0,
             let userid = credentials["username"],
             let credentialsRealm = credentials["realm"] where credentialsRealm == realm,
             let credentialsURI = credentials["uri"] where credentialsURI == request.originalURL,
@@ -113,7 +113,7 @@ public class CredentialsHttpDigest : CredentialsPluginProtocol {
     }
     
     private func createHeaders () -> [String:String]? {
-        var header = "Digest realm=\"" + realm + "\", nonce=\"" + CredentialsHttpDigest.generateNonce() + "\""
+        var header = "Digest realm=\"" + realm + "\", nonce=\"" + CredentialsHTTPDigest.generateNonce() + "\""
         if let opaque = opaque {
             header += ", opaque=\"" + opaque + "\""
         }

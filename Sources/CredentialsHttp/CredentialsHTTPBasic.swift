@@ -20,10 +20,10 @@ import Credentials
 
 import Foundation
 
-public class CredentialsHttpBasic : CredentialsPluginProtocol {
+public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     
     public var name : String {
-        return "HttpBasic"
+        return "HTTPBasic"
     }
     
     public var redirecting: Bool {
