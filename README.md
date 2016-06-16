@@ -1,7 +1,7 @@
-# Kitura-CredentialsHttp
+# Kitura-CredentialsHTTP
 A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication
 
-[![Build Status - Master](https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CredentialsHttp)
+[![Build Status - Master](https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP)
 ![Mac OS X](https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
@@ -19,12 +19,12 @@ Our implementation of Digest authentication doesn't remember nonce values it gen
 * [License](#license)
 
 ## Swift version
-The latest version of Kitura-CredentialsHttp works with the DEVELOPMENT-SNAPSHOT-2016-05-09-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of Kitura-CredentialsHTTP works with the DEVELOPMENT-SNAPSHOT-2016-05-09-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## API
 
 ### Basic authentication
-To create an instance of CredentialsHttpBasic plugin, a `UserProfileLoader` function and an optional realm should be passed to the constructor:
+To create an instance of CredentialsHTTPBasic plugin, a `UserProfileLoader` function and an optional realm should be passed to the constructor:
 ```swift
 public init (userProfileLoader: UserProfileLoader, realm: String?=nil)
 ```
@@ -35,24 +35,24 @@ public typealias UserProfileLoader = (userId: String, callback: (userProfile: Us
 It receives user id, and calls `callback` with `UserProfile` instance and password that correspond to the user id, or `nil` if such user id doesn't exist.
 
 ### Digest authentication
-CredentialsHttpDigest initialization is similar to CredentialsHttpBasic. In addition, an optional opaque value can be passed to the constructor.
+CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addition, an optional opaque value can be passed to the constructor.
 
 ## Example
 
 This example shows how to use this plugin to authenticate requests with HTTP Basic authentication. HTTP Digest authentication is similar.
 <br>
 
-First create an instance of `Credentials` and an instance of `CredentialsHttpBasic` plugin, supplying a `UserProfileLoader` function:
+First create an instance of `Credentials` and an instance of `CredentialsHTTPBasic` plugin, supplying a `UserProfileLoader` function:
 
 ```swift
 import Credentials
-import CredentialsHttp
+import CredentialsHTTP
 
 let credentials = Credentials()
 let users = ["John" : "12345", "Mary" : "qwerasdf"]
-let basicCredentials = CredentialsHttpBasic(userProfileLoader: { userId, callback in
+let basicCredentials = CredentialsHTTPBasic(userProfileLoader: { userId, callback in
     if let storedPassword = users[userId] {
-        callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpBasic"), password: storedPassword)
+        callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HTTPBasic"), password: storedPassword)
     }
     else {
         callback(userProfile: nil, password: nil)
