@@ -20,10 +20,10 @@ import Credentials
 
 import Foundation
 
-public class CredentialsHttpBasic : CredentialsPluginProtocol {
+public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     
     public var name : String {
-        return "HttpBasic"
+        return "HTTPBasic"
     }
     
     public var redirecting: Bool {
@@ -48,7 +48,7 @@ public class CredentialsHttpBasic : CredentialsPluginProtocol {
     public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
         
         var authorization : String
-        if let userinfo = request.parsedUrl.userinfo {
+        if let userinfo = request.parsedURL.userinfo {
             authorization = userinfo
         }
         else {

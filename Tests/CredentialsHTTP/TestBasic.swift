@@ -22,11 +22,11 @@ import KituraNet
 import KituraSys
 import Credentials
 
-@testable import CredentialsHttp
+@testable import CredentialsHTTP
 
 class TestBasic : XCTestCase {
     
-    static var allTests : [(String, TestBasic -> () throws -> Void)] {
+    static var allTests : [(String, (TestBasic) -> () throws -> Void)] {
         return [
                    ("testNoCredentials", testNoCredentials),
                    ("testBadCredentials", testBadCredentials),
@@ -71,7 +71,7 @@ class TestBasic : XCTestCase {
                 XCTAssertEqual(response!.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response!.statusCode)")
                 do {
                     let body = try response!.readString()
-                    XCTAssertEqual(body!,"<!DOCTYPE html><html><body><b>Mary is logged in with HttpBasic</b></body></html>\n\n")
+                    XCTAssertEqual(body!,"<!DOCTYPE html><html><body><b>Mary is logged in with HTTPBasic</b></body></html>\n\n")
                 }
                 catch{
                     XCTFail("No response body")
@@ -86,9 +86,9 @@ class TestBasic : XCTestCase {
         
         let apiCredentials = Credentials()
         let users = ["John" : "12345", "Mary" : "qwerasdf"]
-        let basicCredentials = CredentialsHttpBasic(userProfileLoader: { userId, callback in
+        let basicCredentials = CredentialsHTTPBasic(userProfileLoader: { userId, callback in
             if let storedPassword = users[userId] {
-                callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpBasic"), password: storedPassword)
+                callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HTTPBasic"), password: storedPassword)
             }
             else {
                 callback(userProfile: nil, password: nil)
@@ -96,9 +96,9 @@ class TestBasic : XCTestCase {
             }, realm: "test")
         apiCredentials.register(plugin: basicCredentials)
         
-        let digestCredentials = CredentialsHttpDigest(userProfileLoader: { userId, callback in
+        let digestCredentials = CredentialsHTTPDigest(userProfileLoader: { userId, callback in
             if let storedPassword = users[userId] {
-                callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HttpDigest"), password: storedPassword)
+                callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HTTPDigest"), password: storedPassword)
             }
             else {
                 callback(userProfile: nil, password: nil)
