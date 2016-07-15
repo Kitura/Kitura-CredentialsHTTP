@@ -33,7 +33,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     }
     
     #if os(OSX)
-    public var usersCache : NSCache<NSString, BaseCacheElement>?
+    public var usersCache : Cache<NSString, BaseCacheElement>?
     #else
     public var usersCache : NSCache?
     #endif
@@ -141,7 +141,11 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         for token in tokens {
             let nsString = NSString(string: token)
             do {
-                let regex = try NSRegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
+                #if os(Linux)
+                    let regex = try NSRegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
+                #else
+                    let regex = try RegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
+                #endif
                 let matches = regex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
                 if matches.count == 1 && matches[0].range(at: 1).location != NSNotFound && matches[0].range(at: 2).location != NSNotFound {
                     result[nsString.substring(with: matches[0].range(at: 1))] = nsString.substring(with: matches[0].range(at: 2))
@@ -157,7 +161,11 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     private static func split(originalString: String, pattern: String) -> [String]? {
         var result = [String]()
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options: [])
+            #if os(Linux)
+                let regex = try NSRegularExpression(pattern: pattern, options: [])
+            #else
+                let regex = try RegularExpression(pattern: pattern, options: [])
+            #endif
             let nsString = NSString(string: originalString)
             var start = 0
             while true {

@@ -31,7 +31,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     }
     
     #if os(OSX)
-    public var usersCache : NSCache<NSString, BaseCacheElement>?
+    public var usersCache : Cache<NSString, BaseCacheElement>?
     #else
     public var usersCache : NSCache?
     #endif
@@ -52,14 +52,30 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
             authorization = userinfo
         }
         else {
+            #if os(Linux)
+                let options = NSDataBase64DecodingOptions(rawValue: 0)
+            #else
+                let options = NSData.Base64DecodingOptions(rawValue: 0)
+            #endif
             guard request.headers["Authorization"] != nil,
                 let authorizationHeader = request.headers["Authorization"] where
                 authorizationHeader.components(separatedBy: " ")[0] == "Basic",
-                let decodedData = NSData(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options:NSDataBase64DecodingOptions(rawValue: 0)),
-                let userAuthorization = String(data: decodedData, encoding: NSUTF8StringEncoding) else {
+                let decodedData = NSData(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options: options) else {
                     onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                     return
             }
+
+            #if os(Linux)
+                guard let userAuthorization = String(data: decodedData, encoding: NSUTF8StringEncoding) else {
+                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                    return
+                }
+            #else
+                guard let userAuthorization = String(data: decodedData as Data, encoding: String.Encoding.utf8) else {
+                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                    return
+                }
+            #endif
             
             authorization = userAuthorization as String
         }
