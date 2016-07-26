@@ -81,5 +81,11 @@ router.get("/profile", handler:
 })
 ```
 
+## Troubleshooting
+
+Seeing error `ld: library not found for -lCHttpParser for architecture x86_64` on build?
+
+To solve this, go to your Xcode build settings and add `$SRCROOT/.build/debug` to the Library Search Paths for the CredentialsHTTP targets.
+
 ## License
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE.txt).
