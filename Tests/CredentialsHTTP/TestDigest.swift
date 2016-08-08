@@ -95,7 +95,7 @@ class TestDigest : XCTestCase {
             else {
                 callback(userProfile: nil, password: nil)
             }
-            }, realm: "test", opaque: "0a0b0c0d")
+            }, opaque: "0a0b0c0d", realm: "test")
         
         apiCredentials.register(plugin: digestCredentials)
         

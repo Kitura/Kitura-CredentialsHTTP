@@ -31,9 +31,9 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     }
     
     #if os(OSX)
-    public var usersCache : Cache<NSString, BaseCacheElement>?
+    public var usersCache : NSCache<NSString, BaseCacheElement>?
     #else
-    public var usersCache : NSCache?
+    public var usersCache : Cache?
     #endif
     
     private var userProfileLoader : UserProfileLoader
@@ -52,30 +52,20 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
             authorization = userinfo
         }
         else {
-            #if os(Linux)
-                let options = NSDataBase64DecodingOptions(rawValue: 0)
-            #else
-                let options = NSData.Base64DecodingOptions(rawValue: 0)
-            #endif
+            let options = Data.Base64DecodingOptions(rawValue: 0)
+            
             guard request.headers["Authorization"] != nil,
-                let authorizationHeader = request.headers["Authorization"] where
-                authorizationHeader.components(separatedBy: " ")[0] == "Basic",
-                let decodedData = NSData(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options: options) else {
+                let authorizationHeader = request.headers["Authorization"],
+                        authorizationHeader.components(separatedBy: " ")[0] == "Basic",
+                        let decodedData = Data(base64Encoded: authorizationHeader.components(separatedBy: " ")[1], options: options) else {
                     onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                     return
             }
 
-            #if os(Linux)
-                guard let userAuthorization = String(data: decodedData, encoding: NSUTF8StringEncoding) else {
-                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
-                    return
-                }
-            #else
-                guard let userAuthorization = String(data: decodedData as Data, encoding: String.Encoding.utf8) else {
-                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
-                    return
-                }
-            #endif
+            guard let userAuthorization = String(data: decodedData, encoding: .utf8) else {
+                onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                return
+            }
             
             authorization = userAuthorization as String
         }
@@ -104,7 +94,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         
         
         userProfileLoader(userId: userid) { userProfile, storedPassword in
-            if let userProfile = userProfile, let storedPassword = storedPassword where storedPassword == password {
+            if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
                 let newCacheElement = BaseCacheElement(profile: userProfile)
                 self.usersCache!.setObject(newCacheElement, forKey: (userid+password).bridge())
                 onSuccess(userProfile)

@@ -33,9 +33,9 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     }
     
     #if os(OSX)
-    public var usersCache : Cache<NSString, BaseCacheElement>?
+    public var usersCache : NSCache<NSString, BaseCacheElement>?
     #else
-    public var usersCache : NSCache?
+    public var usersCache : Cache?
     #endif
     
     private var userProfileLoader : UserProfileLoader
@@ -56,26 +56,26 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
         
-        guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"] where authorizationHeader.hasPrefix("Digest") else {
+        guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"], authorizationHeader.hasPrefix("Digest") else {
             onPass(.unauthorized, createHeaders())
             return
         }
         
-        guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))) where credentials.count > 0,
+        guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))), credentials.count > 0,
             let userid = credentials["username"],
-            let credentialsRealm = credentials["realm"] where credentialsRealm == realm,
-            let credentialsURI = credentials["uri"] where credentialsURI == request.originalURL,
+            let credentialsRealm = credentials["realm"], credentialsRealm == realm,
+            let credentialsURI = credentials["uri"], credentialsURI == request.originalURL,
             let credentialsNonce = credentials["nonce"],
             let credentialsCNonce = credentials["cnonce"],
             let credentialsNC = credentials["nc"],
-            let credentialsQoP = credentials["qop"] where credentialsQoP == qop,
+            let credentialsQoP = credentials["qop"], credentialsQoP == qop,
             let credentialsResponse = credentials["response"] else {
                 onFailure(.badRequest, nil)
                 return
         }
         
         if let opaque = opaque {
-            guard let credentialsOpaque = credentials["opaque"] where credentialsOpaque == opaque else {
+            guard let credentialsOpaque = credentials["opaque"], credentialsOpaque == opaque else {
                 onFailure(.badRequest, nil)
                 return
             }
@@ -132,23 +132,35 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         }
     }
     
+    #if os(Linux)
+        typealias RegularExpressionType = RegularExpression
+    #else
+        typealias RegularExpressionType = NSRegularExpression
+    #endif
+    
     private static func parse (params: String) -> [String:String]? {
         guard let tokens = split(originalString: params, pattern: ",(?=(?:[^\"]|\"[^\"]*\")*$)") else {
             return nil
         }
-
+        
         var result = [String:String]()
         for token in tokens {
             let nsString = NSString(string: token)
             do {
-                #if os(Linux)
-                    let regex = try NSRegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
-                #else
-                    let regex = try RegularExpression(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
-                #endif
+                let regex = try RegularExpressionType(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
+                
                 let matches = regex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
-                if matches.count == 1 && matches[0].range(at: 1).location != NSNotFound && matches[0].range(at: 2).location != NSNotFound {
-                    result[nsString.substring(with: matches[0].range(at: 1))] = nsString.substring(with: matches[0].range(at: 2))
+                if matches.count == 1 {
+                    #if os(Linux)
+                        let matchOne = matches[0].range(at: 1)
+                        let matchTwo = matches[0].range(at: 2)
+                    #else
+                        let matchOne = matches[0].rangeAt(1)
+                        let matchTwo = matches[0].rangeAt(2)
+                    #endif
+                    if matchOne.location != NSNotFound && matchTwo.location != NSNotFound {
+                        result[nsString.substring(with: matchOne)] = nsString.substring(with: matchTwo)
+                    }
                 }
             } catch  {
                 return nil
@@ -161,11 +173,8 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     private static func split(originalString: String, pattern: String) -> [String]? {
         var result = [String]()
         do {
-            #if os(Linux)
-                let regex = try NSRegularExpression(pattern: pattern, options: [])
-            #else
-                let regex = try RegularExpression(pattern: pattern, options: [])
-            #endif
+            let regex = try RegularExpressionType(pattern: pattern, options: [])
+            
             let nsString = NSString(string: originalString)
             var start = 0
             while true {

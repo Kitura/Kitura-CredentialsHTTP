@@ -103,7 +103,7 @@ class TestBasic : XCTestCase {
             else {
                 callback(userProfile: nil, password: nil)
             }
-            }, realm: "Kitura-users", opaque: "0a0b0c0d")
+            }, opaque: "0a0b0c0d", realm: "Kitura-users")
         
         apiCredentials.register(plugin: digestCredentials)
         
