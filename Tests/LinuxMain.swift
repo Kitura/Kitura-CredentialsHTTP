@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import CredentialsHTTPTestSuite
+@testable import CredentialsHTTPTests
 
 
 XCTMain([

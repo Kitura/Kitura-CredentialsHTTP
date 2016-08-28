@@ -16,4 +16,4 @@
 
 import Credentials
 
-public typealias UserProfileLoader = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
+public typealias UserProfileLoader = (String, (UserProfile?, String?)->Void) -> Void

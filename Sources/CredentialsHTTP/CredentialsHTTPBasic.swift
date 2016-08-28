@@ -30,22 +30,22 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         return false
     }
     
-    #if os(OSX)
     public var usersCache : NSCache<NSString, BaseCacheElement>?
-    #else
-    public var usersCache : Cache?
-    #endif
     
     private var userProfileLoader : UserProfileLoader
     
     public var realm : String
     
-    public init (userProfileLoader: UserProfileLoader, realm: String?=nil) {
+    public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.realm = realm ?? "Users"
     }
     
-    public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
+    public func authenticate (request: RouterRequest, response: RouterResponse,
+                              options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
+                              onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              inProgress: @escaping () -> Void)  {
         
         var authorization : String
         if let userinfo = request.parsedURL.userinfo {
@@ -79,24 +79,26 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         let userid = credentials[0]
         let password = credentials[1]
         
-        let cacheElement = usersCache!.object(forKey: (userid+password).bridge())
         #if os(Linux)
-            if let cached = cacheElement as? BaseCacheElement {
-                onSuccess(cached.userProfile)
-                return
-            }
+            let key = NSString(string: (userid+password))
         #else
-            if let cached = cacheElement {
-                onSuccess(cached.userProfile)
-                return
-            }
+            let key = (userid+password) as NSString
         #endif
+        let cacheElement = usersCache!.object(forKey: key)
+        if let cached = cacheElement {
+            onSuccess(cached.userProfile)
+            return
+        }
         
-        
-        userProfileLoader(userId: userid) { userProfile, storedPassword in
+        userProfileLoader(userid) { userProfile, storedPassword in
             if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
                 let newCacheElement = BaseCacheElement(profile: userProfile)
-                self.usersCache!.setObject(newCacheElement, forKey: (userid+password).bridge())
+                #if os(Linux)
+                    let key = NSString(string: (userid+password))
+                #else
+                    let key = (userid+password) as NSString
+                #endif
+                self.usersCache!.setObject(newCacheElement, forKey: key)
                 onSuccess(userProfile)
             }
             else {

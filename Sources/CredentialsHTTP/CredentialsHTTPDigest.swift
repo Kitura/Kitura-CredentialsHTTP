@@ -32,11 +32,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         return false
     }
     
-    #if os(OSX)
     public var usersCache : NSCache<NSString, BaseCacheElement>?
-    #else
-    public var usersCache : Cache?
-    #endif
     
     private var userProfileLoader : UserProfileLoader
     
@@ -48,13 +44,17 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     private let algorithm = "MD5"
     
-    public init (userProfileLoader: UserProfileLoader, opaque: String?=nil, realm: String?=nil) {
+    public init (userProfileLoader: @escaping UserProfileLoader, opaque: String?=nil, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.opaque = opaque ?? nil
         self.realm = realm ?? "Users"
     }
     
-    public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
+    public func authenticate (request: RouterRequest, response: RouterResponse,
+                              options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
+                              onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              inProgress: @escaping () -> Void)  {
         
         guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"], authorizationHeader.hasPrefix("Digest") else {
             onPass(.unauthorized, createHeaders())
@@ -88,7 +88,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             }
         }
         
-        userProfileLoader(userId: userid) { userProfile, password in
+        userProfileLoader(userid) { userProfile, password in
             guard let userProfile = userProfile, let password = password else {
                 onFailure(.unauthorized, self.createHeaders())
                 return
