@@ -1,5 +1,5 @@
 # Kitura-CredentialsHTTP
-A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication
+A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication.
 
 [![Build Status - Master](https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP)
 ![Mac OS X](https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat)
