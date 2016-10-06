@@ -39,8 +39,10 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     /// User profile cache.
     public var usersCache: NSCache<NSString, BaseCacheElement>?
     
-    private var userProfileLoader: UserProfileLoader
-    
+    private var userProfileLoader: UserProfileLoader? = nil
+
+    private var verifyPassword: VerifyPassword? = nil
+
     /// The authentication realm attribute.
     public var realm: String
     
@@ -48,11 +50,20 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
     /// - Parameter realm: The realm attribute.
-    public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
+    @available(*, deprecated: 2.0, message: "userProfileLoader has been deprecated from Basic Authentication because of security improvements. Please use VerifyPassword.")  public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.realm = realm ?? "Users"
     }
-    
+
+    /// Initialize a `CredentialsHTTPBasic` instance.
+    ///
+    /// - Parameter verifyPassword: The callback for verifying the password of the user.
+    /// - Parameter realm: The realm attribute.
+    public init (verifyPassword: @escaping VerifyPassword, realm: String?=nil) {
+        self.verifyPassword = verifyPassword
+        self.realm = realm ?? "Users"
+    }
+
     /// Authenticate incoming request using HTTP Basic authentication.
     ///
     /// - Parameter request: The `RouterRequest` object used to get information
@@ -104,31 +115,59 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         let userid = credentials[0]
         let password = credentials[1]
         
-        #if os(Linux)
-            let key = NSString(string: (userid+password))
-        #else
-            let key = (userid+password) as NSString
-        #endif
-        let cacheElement = usersCache!.object(forKey: key)
-        if let cached = cacheElement {
+        let key = NSString(string: (userid+password))
+        
+        guard let usersCache = usersCache else {
+            onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
+            return
+        }
+        
+        if let cached = usersCache.object(forKey: key) {
             onSuccess(cached.userProfile)
             return
         }
         
-        userProfileLoader(userid) { userProfile, storedPassword in
-            if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
-                let newCacheElement = BaseCacheElement(profile: userProfile)
-                #if os(Linux)
+        if let userProfileLoader = self.userProfileLoader {
+            userProfileLoader(userid) { userProfile, storedPassword in
+                if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
+                    let newCacheElement = BaseCacheElement(profile: userProfile)
                     let key = NSString(string: (userid+password))
-                #else
-                    let key = (userid+password) as NSString
-                #endif
-                self.usersCache!.setObject(newCacheElement, forKey: key)
-                onSuccess(userProfile)
+
+                    if let usersCache = self.usersCache {
+                        usersCache.setObject(newCacheElement, forKey: key)
+                        onSuccess(userProfile)
+                    }
+                    else {
+                        onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
+                    }
+                }
+                else {
+                    onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                }
             }
-            else {
-                onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+        }
+        else if let verifyPassword = self.verifyPassword {
+            verifyPassword(userid, password) { userProfile in
+                if let userProfile = userProfile {
+                    let newCacheElement = BaseCacheElement(profile: userProfile)
+                    let key = NSString(string: (userid+password))
+                    
+                    if let usersCache = self.usersCache {
+                        usersCache.setObject(newCacheElement, forKey: key)
+                        onSuccess(userProfile)
+                    }
+                    else {
+                        onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
+                    }
+                }
+                else {
+                    onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                }
             }
+        }
+        else {
+            // either verifyPassword or userProfileLoader must be valid
+            onFailure(.internalServerError, ["WWW-Authenticate" : "Internal server error"])
         }
     }
 }

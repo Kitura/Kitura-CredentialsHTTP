@@ -16,8 +16,9 @@
 
 import Credentials
 
-// MARK UserProfileLoader
+// MARK verifyPassword
 
-/// Type alias for the callback that loads the user profile for the given user ID (invoking the provided closure).
-public typealias UserProfileLoader = (String, (UserProfile?, String?)->Void) -> Void
+/// Type alias for the callback that verifies the userId and password and if
+/// the authentication pair verifies, then a user profile is returned.
 
+public typealias VerifyPassword = (String, String, (UserProfile?)->Void) -> Void
