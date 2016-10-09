@@ -115,31 +115,10 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         let userid = credentials[0]
         let password = credentials[1]
         
-        let key = NSString(string: (userid+password))
-        
-        guard let usersCache = usersCache else {
-            onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
-            return
-        }
-        
-        if let cached = usersCache.object(forKey: key) {
-            onSuccess(cached.userProfile)
-            return
-        }
-        
         if let userProfileLoader = self.userProfileLoader {
             userProfileLoader(userid) { userProfile, storedPassword in
                 if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
-                    let newCacheElement = BaseCacheElement(profile: userProfile)
-                    let key = NSString(string: (userid+password))
-
-                    if let usersCache = self.usersCache {
-                        usersCache.setObject(newCacheElement, forKey: key)
-                        onSuccess(userProfile)
-                    }
-                    else {
-                        onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
-                    }
+                    onSuccess(userProfile)
                 }
                 else {
                     onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
@@ -149,16 +128,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         else if let verifyPassword = self.verifyPassword {
             verifyPassword(userid, password) { userProfile in
                 if let userProfile = userProfile {
-                    let newCacheElement = BaseCacheElement(profile: userProfile)
-                    let key = NSString(string: (userid+password))
-                    
-                    if let usersCache = self.usersCache {
-                        usersCache.setObject(newCacheElement, forKey: key)
-                        onSuccess(userProfile)
-                    }
-                    else {
-                        onFailure(.internalServerError, ["WWW-Authenticate" : "Internal caching error"])
-                    }
+                    onSuccess(userProfile)
                 }
                 else {
                     onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
