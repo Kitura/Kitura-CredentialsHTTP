@@ -30,8 +30,11 @@ protocol CredentialsTest {
 
 extension CredentialsTest {
 
+    func doSetUp() {
+        PrintLogger.use()
+    }
+    
     func doTearDown() {
-        //       sleep(10)
     }
 
     func performServerTest(router: ServerDelegate, asyncTasks: @escaping (XCTestExpectation) -> Void...) {

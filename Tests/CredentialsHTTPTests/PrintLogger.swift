@@ -14,11 +14,22 @@
  * limitations under the License.
  **/
 
-import PackageDescription
+import Foundation
 
-let package = Package(
-    name: "Kitura-CredentialsHTTP",
-    dependencies: [
-        .Package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", majorVersion: 1, minor: 3),
-    ]
-)
+import LoggerAPI
+
+public class PrintLogger: Logger {
+    public func log(_ type: LoggerMessageType, msg: String,
+                    functionName: String, lineNum: Int, fileName: String ) {
+        print("\(type): \(functionName) \(fileName) line \(lineNum) - \(msg)")
+    }
+
+    public func isLogging(_ level: LoggerAPI.LoggerMessageType) -> Bool {
+        return true
+    }
+    
+    public static func use() {
+        Log.logger = PrintLogger()
+        setbuf(stdout, nil)
+    }
+}

@@ -33,6 +33,10 @@ class TestDigest : XCTestCase {
         ]
     }
     
+    override func setUp() {
+        doSetUp()
+    }
+    
     override func tearDown() {
         doTearDown()
     }

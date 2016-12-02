@@ -33,6 +33,10 @@ class TestBasic : XCTestCase {
         ]
     }
     
+    override func setUp() {
+        doSetUp()
+    }
+    
     override func tearDown() {
         doTearDown()
     }
