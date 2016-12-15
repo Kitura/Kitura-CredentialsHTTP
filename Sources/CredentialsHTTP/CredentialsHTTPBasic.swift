@@ -84,7 +84,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
                               inProgress: @escaping () -> Void)  {
         
         var authorization : String
-        if let user = request.urlComponents.user, let password = request.urlComponents.password {
+        if let user = request.urlURL.user, let password = request.urlURL.password {
             authorization = user + ":" + password
         }
         else {
