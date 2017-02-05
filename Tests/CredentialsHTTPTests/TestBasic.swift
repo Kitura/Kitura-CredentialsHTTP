@@ -83,6 +83,15 @@ class TestBasic : XCTestCase {
                 expectation.fulfill()
                 }, headers: ["Authorization" : "Basic QWxhZGRpbjpPcGVuU2VzYW1l"])
         }
+        
+        performServerTest(router: router) { expectation in
+            self.performRequest(method: "get", path:"/private/apiv2/data", callback: {response in
+                XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
+                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
+                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                expectation.fulfill()
+            }, headers: ["Authorization" : "Basic"])
+        }
     }
     
     func testBasic() {
