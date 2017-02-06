@@ -18,6 +18,7 @@ import Kitura
 import KituraNet
 import Credentials
 import Cryptor
+import LoggerAPI
 
 import Foundation
 
@@ -51,6 +52,8 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     private let qop = "auth"
     
     private let algorithm = "MD5"
+    
+    private static let regularExpressions = RegularExpressions()
     
     /// Initialize a `CredentialsHTTPDigest` instance.
     ///
@@ -90,7 +93,8 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))), credentials.count > 0,
             let userid = credentials["username"],
             let credentialsRealm = credentials["realm"], credentialsRealm == realm,
-            let credentialsURI = credentials["uri"], credentialsURI == request.urlURL.path,
+            let credentialsURI = credentials["uri"],
+            credentialsURI == CredentialsHTTPDigest.reassembleURI(request.urlURL),
             let credentialsNonce = credentials["nonce"],
             let credentialsCNonce = credentials["cnonce"],
             let credentialsNC = credentials["nc"],
@@ -164,58 +168,69 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         typealias RegularExpressionType = NSRegularExpression
     #endif
     
+    private struct RegularExpressions {
+        let parseRegex: RegularExpressionType
+        let splitRegex: RegularExpressionType
+        
+        init() {
+            do {
+                parseRegex = try RegularExpressionType(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
+                splitRegex = try RegularExpressionType(pattern: ",(?=(?:[^\"]|\"[^\"]*\")*$)", options: [])
+            }
+            catch {
+                Log.error("Failed to create regular expressions used to parse Digest Authorization header")
+                exit(1)
+            }
+        }
+    }
+    
     private static func parse (params: String) -> [String:String]? {
-        guard let tokens = split(originalString: params, pattern: ",(?=(?:[^\"]|\"[^\"]*\")*$)") else {
+        guard let tokens = split(originalString: params) else {
             return nil
         }
         
         var result = [String:String]()
         for token in tokens {
             let nsString = NSString(string: token)
-            do {
-                let regex = try RegularExpressionType(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
-                
-                let matches = regex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
-                if matches.count == 1 {
-                    #if os(Linux)
-                        let matchOne = matches[0].range(at: 1)
-                        let matchTwo = matches[0].range(at: 2)
-                    #else
-                        let matchOne = matches[0].rangeAt(1)
-                        let matchTwo = matches[0].rangeAt(2)
-                    #endif
-                    if matchOne.location != NSNotFound && matchTwo.location != NSNotFound {
-                        result[nsString.substring(with: matchOne)] = nsString.substring(with: matchTwo)
-                    }
+            let matches = regularExpressions.parseRegex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
+            if matches.count == 1 {
+                #if os(Linux)
+                    let matchOne = matches[0].range(at: 1)
+                    let matchTwo = matches[0].range(at: 2)
+                #else
+                    let matchOne = matches[0].rangeAt(1)
+                    let matchTwo = matches[0].rangeAt(2)
+                #endif
+                if matchOne.location != NSNotFound && matchTwo.location != NSNotFound {
+                    result[nsString.substring(with: matchOne)] = nsString.substring(with: matchTwo)
                 }
-            } catch  {
-                return nil
             }
         }
         return result
     }
     
-    
-    private static func split(originalString: String, pattern: String) -> [String]? {
+    private static func split(originalString: String) -> [String]? {
         var result = [String]()
-        do {
-            let regex = try RegularExpressionType(pattern: pattern, options: [])
-            
-            let nsString = NSString(string: originalString)
-            var start = 0
-            while true {
-                let results = regex.rangeOfFirstMatch(in: originalString, options: [], range: NSMakeRange(start, nsString.length - start))
-                if results.location == NSNotFound {
-                    result.append(nsString.substring(from: start))
-                    break
-                }
-                else {
-                    result.append(nsString.substring(with: NSMakeRange(start, results.location - start)))
-                    start = results.length + results.location
-                }
+        let nsString = NSString(string: originalString)
+        var start = 0
+        while true {
+            let results = regularExpressions.splitRegex.rangeOfFirstMatch(in: originalString, options: [], range: NSMakeRange(start, nsString.length - start))
+            if results.location == NSNotFound {
+                result.append(nsString.substring(from: start))
+                break
             }
-        } catch {
-            return nil
+            else {
+                result.append(nsString.substring(with: NSMakeRange(start, results.location - start)))
+                start = results.length + results.location
+            }
+        }
+        return result
+    }
+    
+    private static func reassembleURI(_ url: URL) -> String {
+        var result = url.path
+        if let query = url.query {
+            result = result + "?" + query
         }
         return result
     }

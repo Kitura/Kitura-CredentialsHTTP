@@ -70,7 +70,7 @@ class TestDigest : XCTestCase {
     
     func testDigest() {
         performServerTest(router: router) { expectation in
-            self.performRequest(method: "get", path:"/private/api/data", callback: {response in
+            self.performRequest(method: "get", path:"/private/api/data?name=kitura", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
                 XCTAssertEqual(response!.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response!.statusCode)")
                 do {
@@ -82,7 +82,7 @@ class TestDigest : XCTestCase {
                 }
 
                 expectation.fulfill()
-                }, headers: ["Authorization" : "Digest username=\"Mary\", realm=\"test\",nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",    uri=\"/private/api/data\",  qop=auth,                       nc=00000001, cnonce=\"0a4f113b\", response=\"59e3cce95566f4dd0262d812a12b9bb6\",  opaque=\"0a0b0c0d\""])
+                }, headers: ["Authorization" : "Digest username=\"Mary\", realm=\"test\",nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",    uri=\"/private/api/data?name=kitura\",  qop=auth,                       nc=00000001, cnonce=\"0a4f113b\", response=\"c96305e606f035fceac5f5ff10b0951a\",  opaque=\"0a0b0c0d\""])
         }
     }
     
