@@ -49,8 +49,8 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", host: self.host, path: "/private/apiv1/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
-                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response?.statusCode)")
+                XCTAssertEqual(response?.headers["WWW-Authenticate"]?.first, "Basic realm=\"test\"")
                 expectation.fulfill()
             })
         }
@@ -58,8 +58,8 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", host: self.host, path: "/private/apiv2/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
-                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response?.statusCode)")
+                XCTAssertEqual(response?.headers["WWW-Authenticate"]?.first, "Basic realm=\"test\"")
                 expectation.fulfill()
             })
         }
@@ -69,8 +69,8 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/apiv1/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
-                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response?.statusCode)")
+                XCTAssertEqual(response?.headers["WWW-Authenticate"]?.first, "Basic realm=\"test\"")
                 expectation.fulfill()
                 }, headers: ["Authorization" : "Basic QWxhZGRpbjpPcGVuU2VzYW1l"])
         }
@@ -78,8 +78,8 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/apiv2/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
-                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response?.statusCode)")
+                XCTAssertEqual(response?.headers["WWW-Authenticate"]?.first, "Basic realm=\"test\"")
                 expectation.fulfill()
                 }, headers: ["Authorization" : "Basic QWxhZGRpbjpPcGVuU2VzYW1l"])
         }
@@ -87,8 +87,8 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/apiv2/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response!.statusCode)")
-                XCTAssertEqual(response!.headers["WWW-Authenticate"]!.first!, "Basic realm=\"test\"")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.unauthorized, "HTTP Status code was \(response?.statusCode)")
+                XCTAssertEqual(response?.headers["WWW-Authenticate"]?.first, "Basic realm=\"test\"")
                 expectation.fulfill()
             }, headers: ["Authorization" : "Basic"])
         }
@@ -98,10 +98,10 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/apiv1/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response!.statusCode)")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response?.statusCode)")
                 do {
-                    let body = try response!.readString()
-                    XCTAssertEqual(body!,"<!DOCTYPE html><html><body><b>Mary is logged in with HTTPBasic</b></body></html>\n\n")
+                    let body = try response?.readString()
+                    XCTAssertEqual(body,"<!DOCTYPE html><html><body><b>Mary is logged in with HTTPBasic</b></body></html>\n\n")
                 }
                 catch{
                     XCTFail("No response body")
@@ -113,10 +113,10 @@ class TestBasic : XCTestCase {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/apiv2/data", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
-                XCTAssertEqual(response!.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response!.statusCode)")
+                XCTAssertEqual(response?.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(response?.statusCode)")
                 do {
-                    let body = try response!.readString()
-                    XCTAssertEqual(body!,"<!DOCTYPE html><html><body><b>Mary is logged in with HTTPBasic</b></body></html>\n\n")
+                    let body = try response?.readString()
+                    XCTAssertEqual(body,"<!DOCTYPE html><html><body><b>Mary is logged in with HTTPBasic</b></body></html>\n\n")
                 }
                 catch{
                     XCTFail("No response body")
