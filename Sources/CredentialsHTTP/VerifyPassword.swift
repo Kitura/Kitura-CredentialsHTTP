@@ -21,4 +21,4 @@ import Credentials
 /// Type alias for the callback that verifies the userId and password and if
 /// the authentication pair verifies, then a user profile is returned.
 
-public typealias VerifyPassword = (String, String, (UserProfile?)->Void) -> Void
+public typealias VerifyPassword = (String, String, @escaping(UserProfile?)->Void) -> Void
