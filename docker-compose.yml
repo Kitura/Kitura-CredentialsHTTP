@@ -1,0 +1,5 @@
+test:
+  image: ibmcom/swift-ubuntu:4.0
+  volumes:
+      - .:/Kitura-CredentialsHTTP
+  command: bash -c "cd /Kitura-CredentialsHTTP && swift package clean && swift build && swift test"

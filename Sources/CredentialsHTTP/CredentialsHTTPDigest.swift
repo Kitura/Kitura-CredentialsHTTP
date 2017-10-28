@@ -198,13 +198,13 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             let nsString = NSString(string: token)
             let matches = regularExpressions.parseRegex.matches(in: token, options: [], range: NSMakeRange(0, nsString.length))
             if matches.count == 1 {
-                #if os(Linux)
+                //#if os(Linux)
                     let matchOne = matches[0].range(at: 1)
                     let matchTwo = matches[0].range(at: 2)
-                #else
-                    let matchOne = matches[0].rangeAt(1)
-                    let matchTwo = matches[0].rangeAt(2)
-                #endif
+                //#else
+                  //  let matchOne = matches[0].rangeAt(1)
+                   // let matchTwo = matches[0].rangeAt(2)
+                //#endif
                 if matchOne.location != NSNotFound && matchTwo.location != NSNotFound {
                     result[nsString.substring(with: matchOne)] = nsString.substring(with: matchTwo)
                 }

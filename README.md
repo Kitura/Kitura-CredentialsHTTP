@@ -11,7 +11,6 @@ A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credential
 
 Our implementation of Digest authentication doesn't remember nonce values it generated, and doesn't check received request's nonce and nc. It uses MD5 algorithm, and the quality of protection (qop) is 'auth'.  
 
-
 ## Table of Contents
 * [Swift version](#swift-version)
 * [API](#api)
@@ -19,7 +18,7 @@ Our implementation of Digest authentication doesn't remember nonce values it gen
 * [License](#license)
 
 ## Swift version
-The latest version of Kitura-CredentialsHTTP requires **Swift 3.0**. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of Kitura-CredentialsHTTP requires **Swift 4.0**. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## API
 

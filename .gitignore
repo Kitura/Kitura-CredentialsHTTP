@@ -1,5 +1,5 @@
-Kitura-CredentialsHTTP.xcodeproj
-Packages
+*.xcodeproj/
 .build
-build
+.build-ubuntu
+Package.resolved
 
