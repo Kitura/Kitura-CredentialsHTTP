@@ -15,7 +15,7 @@
  **/
 
 import Credentials
-
+import AuthContracts
 // MARK verifyPassword
 
 /// Type alias for the callback that verifies the userId and password and if

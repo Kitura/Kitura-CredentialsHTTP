@@ -19,42 +19,42 @@ import KituraNet
 import Credentials
 import Cryptor
 import LoggerAPI
-
+import AuthContracts
 import Foundation
 
 // MARK CredentialsHTTPDigest
 
-/// Authenticate requests using HTTP Digest authentication. 
+/// Authenticate requests using HTTP Digest authentication.
 /// See [RFC 7616](https://tools.ietf.org/html/rfc7616) for details.
 public class CredentialsHTTPDigest : CredentialsPluginProtocol {
-    
+
     /// The name of the plugin.
     public var name: String {
         return "HTTPDigest"
     }
-    
+
     /// An indication as to whether the plugin is redirecting or not.
     public var redirecting: Bool {
         return false
     }
-    
+
     /// User profile cache.
     public var usersCache: NSCache<NSString, BaseCacheElement>?
-    
+
     private var userProfileLoader: UserProfileLoader
-    
+
     /// The authentication realm attribute.
     public var realm: String
-    
+
     /// The opaque value (optional).
     public var opaque: String?
-    
+
     private let qop = "auth"
-    
+
     private let algorithm = "MD5"
-    
+
     private static let regularExpressions = RegularExpressions()
-    
+
     /// Initialize a `CredentialsHTTPDigest` instance.
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
@@ -65,7 +65,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         self.opaque = opaque ?? nil
         self.realm = realm ?? "Users"
     }
-    
+
     /// Authenticate incoming request using HTTP Digest authentication.
     ///
     /// - Parameter request: The `RouterRequest` object used to get information
@@ -84,12 +84,12 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
                               onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
                               onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
                               inProgress: @escaping () -> Void)  {
-        
+
         guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"], authorizationHeader.hasPrefix("Digest") else {
             onPass(.unauthorized, createHeaders())
             return
         }
-        
+
         guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))), credentials.count > 0,
             let userid = credentials["username"],
             let credentialsRealm = credentials["realm"], credentialsRealm == realm,
@@ -103,36 +103,36 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
                 onFailure(.badRequest, nil)
                 return
         }
-        
+
         if let opaque = opaque {
             guard let credentialsOpaque = credentials["opaque"], credentialsOpaque == opaque else {
                 onFailure(.badRequest, nil)
                 return
             }
         }
-        
+
         if let credentialsAlgorithm = credentials["algorithm"] {
             guard credentialsAlgorithm == algorithm else {
                 onFailure(.badRequest, nil)
                 return
             }
         }
-        
+
         userProfileLoader(userid) { userProfile, password in
             guard let userProfile = userProfile, let password = password else {
                 onFailure(.unauthorized, self.createHeaders())
                 return
             }
-            
+
             let s1 = userid + ":" + credentialsRealm + ":" + password
             let ha1 = s1.digest(using: .md5)
-            
+
             let s2 = request.method.rawValue + ":" + credentialsURI
             let ha2 = s2.digest(using: .md5)
-            
+
             let s3 = ha1 + ":" + credentialsNonce + ":" + credentialsNC + ":" + credentialsCNonce + ":" + credentialsQoP + ":" + ha2
             let response = s3.digest(using: .md5)
-            
+
             if response == credentialsResponse {
                 onSuccess(userProfile)
             }
@@ -141,7 +141,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             }
         }
     }
-    
+
     private func createHeaders () -> [String:String]? {
         var header = "Digest realm=\"" + realm + "\", nonce=\"" + CredentialsHTTPDigest.generateNonce() + "\""
         if let opaque = opaque {
@@ -150,7 +150,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         header += ", algorithm=\"" + algorithm + "\", qop=\"" + qop + "\""
         return ["WWW-Authenticate":header]
     }
-    
+
     private static func generateNonce() -> String {
         let nonce : [UInt8]
         do {
@@ -161,7 +161,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             return "0a0b0c0d0e0f1a1b1c1d1e1f01234567"
         }
     }
-    
+
     #if os(Linux)
         #if swift(>=3.1)
             typealias RegularExpressionType = NSRegularExpression
@@ -171,11 +171,11 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     #else
         typealias RegularExpressionType = NSRegularExpression
     #endif
-    
+
     private struct RegularExpressions {
         let parseRegex: RegularExpressionType
         let splitRegex: RegularExpressionType
-        
+
         init() {
             do {
                 parseRegex = try RegularExpressionType(pattern: "(\\w+)=[\"]?([^\"]+)[\"]?$", options: [])
@@ -187,12 +187,12 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             }
         }
     }
-    
+
     private static func parse (params: String) -> [String:String]? {
         guard let tokens = split(originalString: params) else {
             return nil
         }
-        
+
         var result = [String:String]()
         for token in tokens {
             let nsString = NSString(string: token)
@@ -212,7 +212,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         }
         return result
     }
-    
+
     private static func split(originalString: String) -> [String]? {
         var result = [String]()
         let nsString = NSString(string: originalString)
@@ -230,7 +230,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         }
         return result
     }
-    
+
     private static func reassembleURI(_ url: URL) -> String {
         var result = url.path
         if let query = url.query {

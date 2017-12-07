@@ -17,7 +17,7 @@
 import Kitura
 import KituraNet
 import Credentials
-
+import AuthContracts
 import Foundation
 
 // MARK CredentialsHTTPBasic
@@ -25,12 +25,12 @@ import Foundation
 /// Authenticate requests using HTTP Basic authentication.
 /// See [RFC 7617](https://tools.ietf.org/html/rfc7617) for details.
 public class CredentialsHTTPBasic : CredentialsPluginProtocol {
-    
+
     /// The name of the plugin.
     public var name: String {
         return "HTTPBasic"
     }
-    
+
     /// An indication as to whether the plugin is redirecting or not.
     public var redirecting: Bool {
         return false
@@ -38,14 +38,14 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
 
     /// User profile cache.
     public var usersCache: NSCache<NSString, BaseCacheElement>?
-    
+
     private var userProfileLoader: UserProfileLoader? = nil
 
     private var verifyPassword: VerifyPassword? = nil
 
     /// The authentication realm attribute.
     public var realm: String
-    
+
     /// Initialize a `CredentialsHTTPBasic` instance.
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
@@ -82,14 +82,14 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
                               onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
                               onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
                               inProgress: @escaping () -> Void)  {
-        
+
         var authorization : String
         if let user = request.urlURL.user, let password = request.urlURL.password {
             authorization = user + ":" + password
         }
         else {
             let options = Data.Base64DecodingOptions(rawValue: 0)
-            
+
             guard let authorizationHeader = request.headers["Authorization"]  else {
                 onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                 return
@@ -103,19 +103,19 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
                     onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
                     return
             }
-            
+
             authorization = userAuthorization as String
         }
-        
+
         let credentials = authorization.components(separatedBy: ":")
         guard credentials.count >= 2 else {
             onFailure(.badRequest, nil)
             return
         }
-        
+
         let userid = credentials[0]
         let password = credentials[1]
-        
+
         if let userProfileLoader = self.userProfileLoader {
             userProfileLoader(userid) { userProfile, storedPassword in
                 if let userProfile = userProfile, let storedPassword = storedPassword, storedPassword == password {
