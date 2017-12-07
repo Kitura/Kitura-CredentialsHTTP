@@ -26,9 +26,9 @@ let package = Package(
             name: "CredentialsHTTP",
             targets: ["CredentialsHTTP"]
         )
-    ],    
+    ],
     dependencies: [
-         .package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", .branch("ro-codable")),
+         .package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", .branch("aml-auth-single-target")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
