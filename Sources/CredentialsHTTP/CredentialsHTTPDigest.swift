@@ -90,7 +90,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             return
         }
         
-        guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.characters.dropFirst(7))), credentials.count > 0,
+        guard let credentials = CredentialsHTTPDigest.parse(params: String(authorizationHeader.dropFirst(7))), credentials.count > 0,
             let userid = credentials["username"],
             let credentialsRealm = credentials["realm"], credentialsRealm == realm,
             let credentialsURI = credentials["uri"],
