@@ -8,6 +8,9 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
 
@@ -20,6 +23,12 @@
           CredentialsHTTP Docs
         </a>
          (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
       </p>
     
         <p class="header-col header-col--secondary">
@@ -51,6 +60,25 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TypeSafeHTTPBasic.html">TypeSafeHTTPBasic</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:15CredentialsHTTP17UserProfileLoadera">UserProfileLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:15CredentialsHTTP14VerifyPassworda">VerifyPassword</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -58,20 +86,35 @@
         <section class="section">
           <div class="section-content">
             
-            <a href='#kitura-credentialshttp' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='kitura-credentialshttp'>Kitura-CredentialsHTTP</h1>
+            <p align="center">
+    <a href="http://kitura.io/">
+        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    </a>
+</p>
+
+<p align="center">
+    <a href="http://www.kitura.io/">
+    <img src="https://img.shields.io/badge/docs-kitura.io-1FBCE4.svg" alt="Docs">
+    </a>
+    <a href="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP">
+    <img src="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP.svg?branch=master" alt="Build Status - Master">
+    </a>
+    <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
+    <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
+    <img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2">
+    <a href="http://swift-at-ibm-slack.mybluemix.net/">
+    <img src="http://swift-at-ibm-slack.mybluemix.net/badge.svg" alt="Slack Status">
+    </a>
+</p>
+<h1 id='kitura-credentialshttp' class='heading'>Kitura-CredentialsHTTP</h1>
 
 <p>A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication.</p>
-
-<p><a href="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP"><img src="https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master" alt="Build Status - Master"></a>
-<img src="https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat" alt="Mac OS X">
-<img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
-<img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2"></p>
-<a href='#summary' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='summary'>Summary</h2>
+<h2 id='summary' class='heading'>Summary</h2>
 
 <p>A plugin for <a href="https://github.com/IBM-Swift/Kitura-Credentials">Kitura-Credentials</a> framework that authenticates using HTTP Basic and Digest authentication.</p>
 
 <p>Our implementation of Digest authentication doesn&rsquo;t remember nonce values it generated, and doesn&rsquo;t check received request&rsquo;s nonce and nc. It uses MD5 algorithm, and the quality of protection (qop) is &lsquo;auth&rsquo;.  </p>
-<a href='#table-of-contents' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='table-of-contents'>Table of Contents</h2>
+<h2 id='table-of-contents' class='heading'>Table of Contents</h2>
 
 <ul>
 <li><a href="#swift-version">Swift version</a></li>
@@ -79,72 +122,98 @@
 <li><a href="#example">Example</a></li>
 <li><a href="#license">License</a></li>
 </ul>
-<a href='#swift-version' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='swift-version'>Swift version</h2>
+<h2 id='swift-version' class='heading'>Swift version</h2>
 
-<p>The latest version of Kitura-CredentialsHTTP requires <strong>Swift 3.0</strong>. You can download this version of the Swift binaries by following this <a href="https://swift.org/download/">link</a>. Compatibility with other Swift versions is not guaranteed.</p>
-<a href='#api' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='api'>API</h2>
-<a href='#basic-authentication' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='basic-authentication'>Basic authentication</h3>
+<p>The latest version of Kitura-CredentialsHTTP requires <strong>Swift 4.0</strong>. You can download this version of the Swift binaries by following this <a href="https://swift.org/download/">link</a>. Compatibility with other Swift versions is not guaranteed.</p>
+<h2 id='api' class='heading'>API</h2>
+<h3 id='basic-authentication' class='heading'>Basic authentication</h3>
 
-<p>To create an instance of CredentialsHTTPBasic plugin, a <code>UserProfileLoader</code> function and an optional realm should be passed to the constructor:
-<code>swift
-public init (userProfileLoader: UserProfileLoader, realm: String?=nil)
-</code>
-<code>userProfileLoader</code> function should be of type:
-<code>swift
-public typealias UserProfileLoader = (userId: String, callback: (userProfile: UserProfile?, password: String?)-&gt;Void) -&gt; Void
-</code>
-It receives user id, and calls <code>callback</code> with <code>UserProfile</code> instance and password that correspond to the user id, or <code>nil</code> if such user id doesn&rsquo;t exist.</p>
-<a href='#digest-authentication' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='digest-authentication'>Digest authentication</h3>
+<p>To create an instance of <code><a href="Classes/CredentialsHTTPBasic.html">CredentialsHTTPBasic</a></code> plugin, a <code><a href="Typealiases.html#/s:15CredentialsHTTP14VerifyPassworda">VerifyPassword</a></code> function and an optional realm should be passed to the constructor:</p>
+<pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span> <span class="p">(</span><span class="nv">verifyPassword</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">VerifyPassword</span><span class="p">,</span> <span class="nv">realm</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p><code>verifyPassword</code> is a function of type:</p>
+<pre class="highlight swift"><code><span class="c1">/// Type alias for the callback that verifies the userId and password.</span>
+<span class="c1">/// If the authentication pair verifies, then a user profile is returned.</span>
+<span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">VerifyPassword</span> <span class="o">=</span> <span class="p">(</span><span class="nv">userId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UserProfile</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
+</code></pre>
+<h3 id='digest-authentication' class='heading'>Digest authentication</h3>
 
 <p>CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addition, an optional opaque value can be passed to the constructor.</p>
-<a href='#example' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='example'>Example</h2>
+<h2 id='example' class='heading'>Example</h2>
+<h3 id='codable-routing' class='heading'>Codable routing</h3>
+
+<p>First create a struct or final class that conforms to <code><a href="Protocols/TypeSafeHTTPBasic.html">TypeSafeHTTPBasic</a></code>,
+adding any instance variables which you will initialise in verifyPassword:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">CredentialsHTTP</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MyBasicAuth</span><span class="p">:</span> <span class="kt">TypeSafeHTTPBasic</span> <span class="p">{</span>
+
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
+
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">users</span> <span class="o">=</span> <span class="p">[</span><span class="s">"John"</span> <span class="p">:</span> <span class="s">"12345"</span><span class="p">,</span> <span class="s">"Mary"</span> <span class="p">:</span> <span class="s">"qwerasdf"</span><span class="p">]</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">verifyPassword</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">MyBasicAuth</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">storedPassword</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="n">username</span><span class="p">],</span> <span class="n">storedPassword</span> <span class="o">==</span> <span class="n">password</span> <span class="p">{</span>
+            <span class="nf">callback</span><span class="p">(</span><span class="kt">MyBasicAuth</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">username</span><span class="p">))</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">callback</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Add authentication to routes by adding your <code><a href="Protocols/TypeSafeHTTPBasic.html">TypeSafeHTTPBasic</a></code> object, as a <code>TypeSafeMiddleware</code>, to your codable routes:</p>
+<pre class="highlight swift"><code><span class="n">router</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/authedFruits"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">userProfile</span><span class="p">:</span> <span class="kt">MyBasicAuth</span><span class="p">,</span> <span class="nv">respondWith</span><span class="p">:</span> <span class="p">(</span><span class="kt">MyBasicAuth</span><span class="p">?,</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">in</span>
+   <span class="nf">print</span><span class="p">(</span><span class="s">"authenticated </span><span class="se">\(</span><span class="n">userProfile</span><span class="o">.</span><span class="n">id</span><span class="se">)</span><span class="s"> using </span><span class="se">\(</span><span class="n">userProfile</span><span class="o">.</span><span class="n">provider</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+   <span class="nf">respondWith</span><span class="p">(</span><span class="n">userProfile</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='raw-routing' class='heading'>Raw routing</h3>
 
 <p>This example shows how to use this plugin to authenticate requests with HTTP Basic authentication. HTTP Digest authentication is similar.
 <br></p>
 
-<p>First create an instance of <code>Credentials</code> and an instance of <code>CredentialsHTTPBasic</code> plugin, supplying a <code>UserProfileLoader</code> function:</p>
+<p>First create an instance of <code>Credentials</code> and an instance of <code><a href="Classes/CredentialsHTTPBasic.html">CredentialsHTTPBasic</a></code> plugin, supplying a <code>verifyPassword</code> function:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Credentials</span>
 <span class="kd">import</span> <span class="kt">CredentialsHTTP</span>
 
 <span class="k">let</span> <span class="nv">credentials</span> <span class="o">=</span> <span class="kt">Credentials</span><span class="p">()</span>
 <span class="k">let</span> <span class="nv">users</span> <span class="o">=</span> <span class="p">[</span><span class="s">"John"</span> <span class="p">:</span> <span class="s">"12345"</span><span class="p">,</span> <span class="s">"Mary"</span> <span class="p">:</span> <span class="s">"qwerasdf"</span><span class="p">]</span>
-<span class="k">let</span> <span class="nv">basicCredentials</span> <span class="o">=</span> <span class="kt">CredentialsHTTPBasic</span><span class="p">(</span><span class="nv">userProfileLoader</span><span class="p">:</span> <span class="p">{</span> <span class="n">userId</span><span class="p">,</span> <span class="n">callback</span> <span class="k">in</span>
-    <span class="k">if</span> <span class="k">let</span> <span class="nv">storedPassword</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="n">userId</span><span class="p">]</span> <span class="p">{</span>
-        <span class="nf">callback</span><span class="p">(</span><span class="nv">userProfile</span><span class="p">:</span> <span class="kt">UserProfile</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">userId</span><span class="p">,</span> <span class="nv">displayName</span><span class="p">:</span> <span class="n">userId</span><span class="p">,</span> <span class="nv">provider</span><span class="p">:</span> <span class="s">"HTTPBasic"</span><span class="p">),</span> <span class="nv">password</span><span class="p">:</span> <span class="n">storedPassword</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="nf">callback</span><span class="p">(</span><span class="nv">userProfile</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">basicCredentials</span> <span class="o">=</span> <span class="kt">CredentialsHTTPBasic</span><span class="p">(</span><span class="nv">verifyPassword</span><span class="p">:</span> <span class="p">{</span> <span class="n">userId</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">callback</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">storedPassword</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="n">userId</span><span class="p">],</span> <span class="n">storedPassword</span> <span class="o">==</span> <span class="n">password</span> <span class="p">{</span>
+        <span class="nf">callback</span><span class="p">(</span><span class="kt">UserProfile</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">userId</span><span class="p">,</span> <span class="nv">displayName</span><span class="p">:</span> <span class="n">userId</span><span class="p">,</span> <span class="nv">provider</span><span class="p">:</span> <span class="s">"HTTPBasic"</span><span class="p">))</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nf">callback</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">})</span>
 </code></pre>
 
-<p>Now register the plugin:
-<code>swift
-credentials.register(plugin: basicCredentials)
-</code></p>
+<p>Now register the plugin:</p>
+<pre class="highlight swift"><code><span class="n">credentials</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="nv">plugin</span><span class="p">:</span> <span class="n">basicCredentials</span><span class="p">)</span>
+</code></pre>
 
-<p>Connect <code>credentials</code> middleware to profile requests:
-<code>swift
-router.all(&quot;/profile&quot;, middleware: credentials)
-</code>
-If the authentication is successful, <code>request.userProfile</code> will contain user profile information:
-<code>swift
-router.get(&quot;/profile&quot;, handler:
-    { request, response, next in
-      ...
-      let profile = request.userProfile
-      let userId = profile.id
-      let userName = profile.displayName
-      ...
-      next()
-})
-</code></p>
-<a href='#troubleshooting' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='troubleshooting'>Troubleshooting</h2>
+<p>Connect <code>credentials</code> middleware to profile requests:</p>
+<pre class="highlight swift"><code><span class="n">router</span><span class="o">.</span><span class="nf">all</span><span class="p">(</span><span class="s">"/profile"</span><span class="p">,</span> <span class="nv">middleware</span><span class="p">:</span> <span class="n">credentials</span><span class="p">)</span>
+</code></pre>
+
+<p>If the authentication is successful, <code>request.userProfile</code> will contain user profile information:</p>
+<pre class="highlight swift"><code><span class="n">router</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/profile"</span><span class="p">,</span> <span class="nv">handler</span><span class="p">:</span>
+    <span class="p">{</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">next</span> <span class="k">in</span>
+      <span class="o">...</span>
+      <span class="k">let</span> <span class="nv">profile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">userProfile</span>
+      <span class="k">let</span> <span class="nv">userId</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">id</span>
+      <span class="k">let</span> <span class="nv">userName</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">displayName</span>
+      <span class="o">...</span>
+      <span class="nf">next</span><span class="p">()</span>
+<span class="p">})</span>
+</code></pre>
+<h2 id='troubleshooting' class='heading'>Troubleshooting</h2>
 
 <p>Seeing error <code>ld: library not found for -lCHttpParser for architecture x86_64</code> on build?</p>
 
 <p>To solve this, go to your Xcode build settings and add <code>$SRCROOT/.build/debug</code> to the Library Search Paths for the CredentialsHTTP targets.</p>
-<a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
+<h2 id='license' class='heading'>License</h2>
 
 <p>This library is licensed under Apache 2.0. Full license text is available in <a href="LICENSE.txt">LICENSE</a>.</p>
 
@@ -155,8 +224,8 @@ router.get(&quot;/profile&quot;, handler:
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2016-10-10)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-06-05)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

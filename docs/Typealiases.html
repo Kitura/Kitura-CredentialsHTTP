@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>Type Aliases  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="Classes  Reference"></a>
+    <a title="Type Aliases  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -43,7 +43,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">CredentialsHTTP Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      Type Aliases  Reference
     </p>
 
     <div class="content-wrapper">
@@ -85,8 +85,8 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            <h1>Type Aliases</h1>
+            <p>The following type aliases are available globally.</p>
 
           </div>
         </section>
@@ -98,9 +98,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CredentialsHTTP0A9HTTPBasicC"></a>
-                    <a name="//apple_ref/swift/Class/CredentialsHTTPBasic" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CredentialsHTTP0A9HTTPBasicC">CredentialsHTTPBasic</a>
+                    <a name="/s:15CredentialsHTTP17UserProfileLoadera"></a>
+                    <a name="//apple_ref/swift/Alias/UserProfileLoader" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CredentialsHTTP17UserProfileLoadera">UserProfileLoader</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -108,16 +108,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Authenticate requests using HTTP Basic authentication.
-See <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a> for details.</p>
+                        <p>Type alias for the callback that loads the user profile for the given user ID (invoking the provided closure).</p>
 
-                        <a href="Classes/CredentialsHTTPBasic.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPBasic</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">UserProfileLoader</span> <span class="o">=</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="p">(</span><span class="kt">UserProfile</span><span class="p">?,</span> <span class="kt">String</span><span class="p">?)</span><span class="o">-&gt;</span><span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>
@@ -131,9 +129,9 @@ See <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a> for details.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CredentialsHTTP0A10HTTPDigestC"></a>
-                    <a name="//apple_ref/swift/Class/CredentialsHTTPDigest" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CredentialsHTTP0A10HTTPDigestC">CredentialsHTTPDigest</a>
+                    <a name="/s:15CredentialsHTTP14VerifyPassworda"></a>
+                    <a name="//apple_ref/swift/Alias/VerifyPassword" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15CredentialsHTTP14VerifyPassworda">VerifyPassword</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -141,16 +139,15 @@ See <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a> for details.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Authenticate requests using HTTP Digest authentication. 
-See <a href="https://tools.ietf.org/html/rfc7616">RFC 7616</a> for details.</p>
+                        <p>Type alias for the callback that verifies the userId and password and if
+the authentication pair verifies, then a user profile is returned.</p>
 
-                        <a href="Classes/CredentialsHTTPDigest.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPDigest</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">VerifyPassword</span> <span class="o">=</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">String</span><span class="p">,</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UserProfile</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
 
                         </div>
                       </div>

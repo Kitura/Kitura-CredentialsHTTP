@@ -8,6 +8,9 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
 
@@ -20,6 +23,12 @@
           CredentialsHTTP Docs
         </a>
          (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
       </p>
     
         <p class="header-col header-col--secondary">
@@ -51,6 +60,25 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TypeSafeHTTPBasic.html">TypeSafeHTTPBasic</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:15CredentialsHTTP17UserProfileLoadera">UserProfileLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:15CredentialsHTTP14VerifyPassworda">VerifyPassword</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -70,9 +98,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C15CredentialsHTTP20CredentialsHTTPBasic"></a>
+                    <a name="/s:15CredentialsHTTP0A9HTTPBasicC"></a>
                     <a name="//apple_ref/swift/Class/CredentialsHTTPBasic" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C15CredentialsHTTP20CredentialsHTTPBasic">CredentialsHTTPBasic</a>
+                    <a class="token" href="#/s:15CredentialsHTTP0A9HTTPBasicC">CredentialsHTTPBasic</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -89,7 +117,7 @@ See <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a> for details.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPBasic</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPBasic</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
 
                         </div>
                       </div>
@@ -103,9 +131,9 @@ See <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a> for details.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C15CredentialsHTTP21CredentialsHTTPDigest"></a>
+                    <a name="/s:15CredentialsHTTP0A10HTTPDigestC"></a>
                     <a name="//apple_ref/swift/Class/CredentialsHTTPDigest" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C15CredentialsHTTP21CredentialsHTTPDigest">CredentialsHTTPDigest</a>
+                    <a class="token" href="#/s:15CredentialsHTTP0A10HTTPDigestC">CredentialsHTTPDigest</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -122,7 +150,7 @@ See <a href="https://tools.ietf.org/html/rfc7616">RFC 7616</a> for details.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPDigest</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CredentialsHTTPDigest</span> <span class="p">:</span> <span class="kt">CredentialsPluginProtocol</span></code></pre>
 
                         </div>
                       </div>
@@ -137,8 +165,8 @@ See <a href="https://tools.ietf.org/html/rfc7616">RFC 7616</a> for details.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2016-10-10)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-06-05)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

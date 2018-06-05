@@ -8,18 +8,23 @@ branches:
     - develop
     - /^issue.*$/
 
-notifications:
-  slack:
-    secure: "M8Ny2grDIwv+jTRTPIlYRiak05HwrGMjXaEJYk/jagTYYZcUL/4m1ebPX5zE768o1C/ALqIzWDX82Vcoy9xlOgtwB/UaOy5JNxj9SxJe7qGHJ6VzEx8rfnKFgYaOC/OA3LkZjA8ntMbzwwH60RDmHESgCihqaLe5wHyNV9XicZqqKmUC3umw4rG4dSu8+1o2evGM2uaCal93HrSSKl23KlotdSxf7sEHxUrAP7jDIoYeHsIPlUyoSUQFKcBPKqBdRl7ENabW7ZAGhy7oU2W0EvWgyF9ZJ+4x+wXzQZ05ruTXd1rPw5JD7s3KuTSQ3wsIox7YWszwRaypN1sGX7Lsb9N7dsEDfra/MbBrfiVHHzCHIURhREfBMbsoXaQ90wQLS/S5Mlvc6w6KafrjkvzrlrLMP+19oF/yd6onCUOFry3tkvva0+MXf5K3+UVU6+xflCFpYZLz0h3nK5XbVvyBNEZQFrHlUKRs0jVLJUO7hhkzTjgw8cX4P0ASu4bJ26N7uCnylQTfDgXs79twDUT4MKr82FaD2efk14BSgvXq4+aXRPzqLsqRwkNTwUPJM3yMvrRI9U2kEHAshGAGOYUnfP/ekGOmmzT9i0sYHddZekOWf9Xm5vsKok8oWr6MmcVGeyeAmzvz8gh1CTRM9vGbE1wf3i38zrl2GBRDCKPhifQ="
-
 matrix:
   include:
     - os: linux
       dist: trusty
       sudo: required
-    - os: osx
-      osx_image: xcode9
+      env: SWIFT_SNAPSHOT=4.0.3
+    - os: linux
+      dist: trusty
       sudo: required
+    - os: osx
+      osx_image: xcode9.2
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.0.3
+    - os: osx
+      osx_image: xcode9.3
+      sudo: required
+      env: SWIFT_SNAPSHOT=4.1 JAZZY_ELIGIBLE=true
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
