@@ -21,5 +21,6 @@ import XCTest
 
 XCTMain([
             testCase(TestBasic.allTests),
-            testCase(TestDigest.allTests)
+            testCase(TestDigest.allTests),
+            testCase(TestTypeSafeBasic.allTests)
     ])
