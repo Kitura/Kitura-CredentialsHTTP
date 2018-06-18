@@ -59,7 +59,7 @@ CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addi
 ### Codable routing
 
 First create a struct or final class that conforms to `TypeSafeHTTPBasic`,
-adding any instance variables which you will initialise in verifyPassword:
+adding any instance variables, which you will initialise in `verifyPassword`:
 
 ```swift
 import CredentialsHTTP
@@ -83,7 +83,7 @@ public struct MyBasicAuth: TypeSafeHTTPBasic {
 Add authentication to routes by adding your `TypeSafeHTTPBasic` object, as a `TypeSafeMiddleware`, to your codable routes:
 
 ```swift
-router.get("/authedFruits") { (userProfile: MyBasicAuth, respondWith: (MyBasicAuth?, RequestError?) -> Void) in
+router.get("/protected") { (userProfile: MyBasicAuth, respondWith: (MyBasicAuth?, RequestError?) -> Void) in
    print("authenticated \(userProfile.id) using \(userProfile.provider)")
    respondWith(userProfile, nil)
 }

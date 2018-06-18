@@ -37,9 +37,9 @@ import Foundation
  
     public static let realm = "Login message"
  
-    public static func verifyPassword(username: String, password: String, callback: @escaping (TestHTTPBasic?) -> Void) {
+    public static func verifyPassword(username: String, password: String, callback: @escaping (MyHTTPBasic?) -> Void) {
         if let storedPassword = users[username], storedPassword == password {
-            callback(TestHTTPBasic(id: username))
+            callback(MyHTTPBasic(id: username))
         } else {
             callback(nil)
         }
@@ -50,7 +50,7 @@ import Foundation
     let name: String
  }
  
- router.get("/authedFruits") { (authedUser: MyHTTPBasic, respondWith: (User?, RequestError?) -> Void) in
+ router.get("/protected") { (authedUser: MyHTTPBasic, respondWith: (User?, RequestError?) -> Void) in
     let user = User(name: authedUser.id)
     respondWith(user, nil)
  }

@@ -123,9 +123,9 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
 
    <span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">realm</span> <span class="o">=</span> <span class="s">"Login message"</span>
 
-   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">verifyPassword</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">TestHTTPBasic</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">verifyPassword</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">MyHTTPBasic</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
        <span class="k">if</span> <span class="k">let</span> <span class="nv">storedPassword</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="n">username</span><span class="p">],</span> <span class="n">storedPassword</span> <span class="o">==</span> <span class="n">password</span> <span class="p">{</span>
-           <span class="nf">callback</span><span class="p">(</span><span class="kt">TestHTTPBasic</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">username</span><span class="p">))</span>
+           <span class="nf">callback</span><span class="p">(</span><span class="kt">MyHTTPBasic</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">username</span><span class="p">))</span>
        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
            <span class="nf">callback</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
        <span class="p">}</span>
@@ -136,7 +136,7 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
 <span class="p">}</span>
 
-<span class="n">router</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/authedFruits"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">authedUser</span><span class="p">:</span> <span class="kt">MyHTTPBasic</span><span class="p">,</span> <span class="nv">respondWith</span><span class="p">:</span> <span class="p">(</span><span class="kt">User</span><span class="p">?,</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">in</span>
+<span class="n">router</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/protected"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">authedUser</span><span class="p">:</span> <span class="kt">MyHTTPBasic</span><span class="p">,</span> <span class="nv">respondWith</span><span class="p">:</span> <span class="p">(</span><span class="kt">User</span><span class="p">?,</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">in</span>
    <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">authedUser</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
    <span class="nf">respondWith</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
 <span class="p">}</span>
@@ -163,7 +163,7 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-06-05)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-06-18)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
