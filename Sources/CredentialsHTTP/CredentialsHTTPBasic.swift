@@ -107,14 +107,14 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
             authorization = userAuthorization as String
         }
         
-        let credentials = authorization.components(separatedBy: ":")
-        guard credentials.count >= 2 else {
+        let credentials = authorization.split(separator: ":", maxSplits: 1)
+        guard credentials.count == 2 else {
             onFailure(.badRequest, nil)
             return
         }
         
-        let userid = credentials[0]
-        let password = credentials[1]
+        let userid = String(credentials[0])
+        let password = String(credentials[1])
         
         if let userProfileLoader = self.userProfileLoader {
             userProfileLoader(userid) { userProfile, storedPassword in
