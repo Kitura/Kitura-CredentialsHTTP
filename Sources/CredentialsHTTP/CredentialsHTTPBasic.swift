@@ -50,7 +50,8 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
     /// - Parameter realm: The realm attribute.
-    @available(*, deprecated: 2.0, message: "userProfileLoader has been deprecated from Basic Authentication because of security improvements. Please use verifyPassword.")  public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
+    @available(*, deprecated, message: "userProfileLoader has been deprecated from Basic Authentication because of security improvements. Please use verifyPassword.")
+    public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.realm = realm ?? "Users"
     }
