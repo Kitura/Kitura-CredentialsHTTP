@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:4.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 /**
  * Copyright IBM Corporation 2016-2019
@@ -26,7 +26,7 @@ let package = Package(
             name: "CredentialsHTTP",
             targets: ["CredentialsHTTP"]
         )
-    ],    
+    ],
     dependencies: [
          .package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", from: "2.2.0"),
     ],
