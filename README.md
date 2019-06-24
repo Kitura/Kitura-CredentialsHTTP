@@ -28,16 +28,29 @@ A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credential
 
 Our implementation of Digest authentication doesn't remember nonce values it generated, and doesn't check received request's nonce and nc. It uses MD5 algorithm, and the quality of protection (qop) is 'auth'.  
 
-## Table of Contents
-* [Swift version](#swift-version)
-* [API](#api)
-* [Example](#example)
-* [License](#license)
-
 ## Swift version
 The latest version of Kitura-CredentialsHTTP requires **Swift 4.0** or later. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
-## API
+## Usage
+
+#### Add dependencies
+
+Add the `Kitura-CredentialsHTTP` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `Kitura-CredentialsHTTP` [release](https://github.com/IBM-Swift/Kitura-CredentialsHTTP/releases).
+
+```swift
+.package(url: "https://github.com/IBM-Swift/Kitura-CredentialsHTTP.git", from: "x.x.x")
+```
+
+Add `CredentialsHTTP` to your target's dependencies:
+
+```swift
+.target(name: "example", dependencies: ["CredentialsHTTP"]),
+```
+#### Import packages
+
+```swift
+import CredentialsHTTP
+```
 
 ### Basic authentication
 To create an instance of `CredentialsHTTPBasic` plugin, a `VerifyPassword` function and an optional realm should be passed to the constructor:
