@@ -1,6 +1,6 @@
 module: CredentialsHTTP
 author: IBM
-github_url: https://github.com/IBM-Swift/Kitura-CredentialsHTTP/
+github_url: https://github.com/Kitura/Kitura-CredentialsHTTP/
 
 theme: fullwidth
 clean: true

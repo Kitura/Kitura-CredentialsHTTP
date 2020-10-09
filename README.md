@@ -1,16 +1,16 @@
 <p align="center">
-    <a href="http://kitura.io/">
-        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    <a href="http://kitura.dev/">
+        <img src="https://raw.githubusercontent.com/Kitura/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
     </a>
 </p>
 
 
 <p align="center">
-    <a href="http://www.kitura.io/">
-    <img src="https://img.shields.io/badge/docs-kitura.io-1FBCE4.svg" alt="Docs">
+    <a href="http://www.kitura.dev/">
+    <img src="https://img.shields.io/badge/docs-kitura.dev-1FBCE4.svg" alt="Docs">
     </a>
-    <a href="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP">
-    <img src="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP.svg?branch=master" alt="Build Status - Master">
+    <a href="https://travis-ci.org/Kitura/Kitura-CredentialsHTTP">
+    <img src="https://travis-ci.org/Kitura/Kitura-CredentialsHTTP.svg?branch=master" alt="Build Status - Master">
     </a>
     <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
     <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
@@ -24,7 +24,7 @@
 A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication.
 
 ## Summary
-A plugin for [Kitura-Credentials](https://github.com/IBM-Swift/Kitura-Credentials) framework that authenticates using HTTP Basic and Digest authentication.
+A plugin for [Kitura-Credentials](https://github.com/Kitura/Kitura-Credentials) framework that authenticates using HTTP Basic and Digest authentication.
 
 Our implementation of Digest authentication doesn't remember nonce values it generated, and doesn't check received request's nonce and nc. It uses MD5 algorithm, and the quality of protection (qop) is 'auth'.  
 
@@ -35,10 +35,10 @@ The latest version of Kitura-CredentialsHTTP requires **Swift 4.0** or later. Yo
 
 #### Add dependencies
 
-Add the `Kitura-CredentialsHTTP` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `Kitura-CredentialsHTTP` [release](https://github.com/IBM-Swift/Kitura-CredentialsHTTP/releases).
+Add the `Kitura-CredentialsHTTP` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `Kitura-CredentialsHTTP` [release](https://github.com/Kitura/Kitura-CredentialsHTTP/releases).
 
 ```swift
-.package(url: "https://github.com/IBM-Swift/Kitura-CredentialsHTTP.git", from: "x.x.x")
+.package(url: "https://github.com/Kitura/Kitura-CredentialsHTTP.git", from: "x.x.x")
 ```
 
 Add `CredentialsHTTP` to your target's dependencies:
