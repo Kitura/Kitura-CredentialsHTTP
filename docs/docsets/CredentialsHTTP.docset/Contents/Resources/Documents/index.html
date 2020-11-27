@@ -32,7 +32,7 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP/">
+          <a class="header-link" href="https://github.com/Kitura/Kitura-CredentialsHTTP/">
             <img class="header-icon" src="img/gh.png"/>
             View on GitHub
           </a>
@@ -84,20 +84,20 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             
             <p align="center">
-    <a href="http://kitura.io/">
-        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    <a href="http://kitura.dev/">
+        <img src="https://raw.githubusercontent.com/Kitura/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
     </a>
 </p>
 
 <p align="center">
-    <a href="http://www.kitura.io/">
-    <img src="https://img.shields.io/badge/docs-kitura.io-1FBCE4.svg" alt="Docs">
+    <a href="http://www.kitura.dev/">
+    <img src="https://img.shields.io/badge/docs-kitura.dev-1FBCE4.svg" alt="Docs">
     </a>
-    <a href="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP">
-    <img src="https://travis-ci.org/IBM-Swift/Kitura-CredentialsHTTP.svg?branch=master" alt="Build Status - Master">
+    <a href="https://travis-ci.org/Kitura/Kitura-CredentialsHTTP">
+    <img src="https://travis-ci.org/Kitura/Kitura-CredentialsHTTP.svg?branch=master" alt="Build Status - Master">
     </a>
     <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
     <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
@@ -111,21 +111,25 @@
 <p>A plugin for the Kitura-Credentials framework that authenticates using HTTP Basic and Digest authentication.</p>
 <h2 id='summary' class='heading'>Summary</h2>
 
-<p>A plugin for <a href="https://github.com/IBM-Swift/Kitura-Credentials">Kitura-Credentials</a> framework that authenticates using HTTP Basic and Digest authentication.</p>
+<p>A plugin for <a href="https://github.com/Kitura/Kitura-Credentials">Kitura-Credentials</a> framework that authenticates using HTTP Basic and Digest authentication.</p>
 
 <p>Our implementation of Digest authentication doesn&rsquo;t remember nonce values it generated, and doesn&rsquo;t check received request&rsquo;s nonce and nc. It uses MD5 algorithm, and the quality of protection (qop) is &lsquo;auth&rsquo;.  </p>
-<h2 id='table-of-contents' class='heading'>Table of Contents</h2>
-
-<ul>
-<li><a href="#swift-version">Swift version</a></li>
-<li><a href="#api">API</a></li>
-<li><a href="#example">Example</a></li>
-<li><a href="#license">License</a></li>
-</ul>
 <h2 id='swift-version' class='heading'>Swift version</h2>
 
 <p>The latest version of Kitura-CredentialsHTTP requires <strong>Swift 4.0</strong> or later. You can download this version of the Swift binaries by following this <a href="https://swift.org/download/">link</a>. Compatibility with other Swift versions is not guaranteed.</p>
-<h2 id='api' class='heading'>API</h2>
+<h2 id='usage' class='heading'>Usage</h2>
+<h4 id='add-dependencies' class='heading'>Add dependencies</h4>
+
+<p>Add the <code>Kitura-CredentialsHTTP</code> package to the dependencies within your application’s <code>Package.swift</code> file. Substitute <code>&quot;x.x.x&quot;</code> with the latest <code>Kitura-CredentialsHTTP</code> <a href="https://github.com/Kitura/Kitura-CredentialsHTTP/releases">release</a>.</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Kitura/Kitura-CredentialsHTTP.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"x.x.x"</span><span class="p">)</span>
+</code></pre>
+
+<p>Add <code>CredentialsHTTP</code> to your target&rsquo;s dependencies:</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">target</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"example"</span><span class="p">,</span> <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"CredentialsHTTP"</span><span class="p">]),</span>
+</code></pre>
+<h4 id='import-packages' class='heading'>Import packages</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">CredentialsHTTP</span>
+</code></pre>
 <h3 id='basic-authentication' class='heading'>Basic authentication</h3>
 
 <p>To create an instance of <code><a href="Classes/CredentialsHTTPBasic.html">CredentialsHTTPBasic</a></code> plugin, a <code><a href="Typealiases.html#/s:15CredentialsHTTP14VerifyPassworda">VerifyPassword</a></code> function and an optional realm should be passed to the constructor:</p>
@@ -224,8 +228,8 @@ adding any instance variables, which you will initialise in <code>verifyPassword
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-07-03)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">IBM &amp; Kitura Project Contributors</a>. All rights reserved. (Last updated: 2020-11-25)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

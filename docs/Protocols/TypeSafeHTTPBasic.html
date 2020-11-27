@@ -33,7 +33,7 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP/">
+          <a class="header-link" href="https://github.com/Kitura/Kitura-CredentialsHTTP/">
             <img class="header-icon" src="../img/gh.png"/>
             View on GitHub
           </a>
@@ -85,10 +85,11 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             <h1>TypeSafeHTTPBasic</h1>
               <div class="declaration">
                 <div class="language">
+                  
                   <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TypeSafeHTTPBasic</span> <span class="p">:</span> <span class="kt">TypeSafeCredentials</span></code></pre>
 
                 </div>
@@ -97,7 +98,7 @@
 This protocol will be implemented by a Swift object defined by the user.
 The plugin must implement a <code>verifyPassword</code> function which takes a username and password as input
 and returns an instance of <code>Self</code> on success or <code>nil</code> on failure.
-This instance must contain the authentication <code>provider</code> (defaults to <q>HTTPBasic</q>) and an <code>id</code>, uniquely identifying the user.
+This instance must contain the authentication <code>provider</code> (defaults to &ldquo;HTTPBasic&rdquo;) and an <code>id</code>, uniquely identifying the user.
 The users object can then be used in TypeSafeMiddlware routes to authenticate with HTTP basic.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MyHTTPBasic</span><span class="p">:</span> <span class="kt">TypeSafeHTTPBasic</span> <span class="p">{</span>
@@ -150,19 +151,19 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The realm for which these credentials are valid (defaults to <q>User</q>)</p>
+                        <p>The realm for which these credentials are valid (defaults to &ldquo;User&rdquo;)</p>
 
                       </div>
                       <h4>Default Implementation</h4>
                       <div class="default_impl abstract">
-                        <p>The realm for which these credentials are valid (defaults to <q>User</q>)</p>
+                        <p>The realm for which these credentials are valid (defaults to &ldquo;User&rdquo;)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">var</span> <span class="nv">realm</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">var</span> <span class="nv">realm</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -172,9 +173,9 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CredentialsHTTP17TypeSafeHTTPBasicP14verifyPasswordySS8username_SS8passwordyxSgc8callbacktFZ"></a>
+                    <a name="/s:15CredentialsHTTP17TypeSafeHTTPBasicP14verifyPassword8username8password8callbackySS_SSyxSgctFZ"></a>
                     <a name="//apple_ref/swift/Method/verifyPassword(username:password:callback:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CredentialsHTTP17TypeSafeHTTPBasicP14verifyPasswordySS8username_SS8passwordyxSgc8callbacktFZ">verifyPassword(username:password:callback:)</a>
+                    <a class="token" href="#/s:15CredentialsHTTP17TypeSafeHTTPBasicP14verifyPassword8username8password8callbackySS_SSyxSgctFZ">verifyPassword(username:<wbr>password:<wbr>callback:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -189,17 +190,13 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">verifyPassword</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="k">Self</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">verifyPassword</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="k">Self</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -216,14 +213,14 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The name of the authentication provider (defaults to <q>HTTPBasic</q>)</p>
+                        <p>The name of the authentication provider (defaults to &ldquo;HTTPBasic&rdquo;)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">provider</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">provider</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -233,9 +230,9 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15CredentialsHTTP17TypeSafeHTTPBasicPAAE12authenticatey6Kitura13RouterRequestC7request_AE0H8ResponseC8responseyxc9onSuccessy0G3Net14HTTPStatusCodeOSg_s10DictionaryVyS2SGSgtc0M7FailureyAP_ATtc0M4SkiptFZ"></a>
+                    <a name="/s:15CredentialsHTTP17TypeSafeHTTPBasicPAAE12authenticate7request8response9onSuccess0I7Failure0I4Skipy6Kitura13RouterRequestC_AJ0N8ResponseCyxcy0M3Net14HTTPStatusCodeOSg_SDyS2SGSgtcyAR_ATtctFZ"></a>
                     <a name="//apple_ref/swift/Method/authenticate(request:response:onSuccess:onFailure:onSkip:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15CredentialsHTTP17TypeSafeHTTPBasicPAAE12authenticatey6Kitura13RouterRequestC7request_AE0H8ResponseC8responseyxc9onSuccessy0G3Net14HTTPStatusCodeOSg_s10DictionaryVyS2SGSgtc0M7FailureyAP_ATtc0M4SkiptFZ">authenticate(request:response:onSuccess:onFailure:onSkip:)</a>
+                    <a class="token" href="#/s:15CredentialsHTTP17TypeSafeHTTPBasicPAAE12authenticate7request8response9onSuccess0I7Failure0I4Skipy6Kitura13RouterRequestC_AJ0N8ResponseCyxcy0M3Net14HTTPStatusCodeOSg_SDyS2SGSgtcyAR_ATtctFZ">authenticate(request:<wbr>response:<wbr>onSuccess:<wbr>onFailure:<wbr>onSkip:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -338,8 +335,8 @@ The users object can then be used in TypeSafeMiddlware routes to authenticate wi
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-07-03)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">IBM &amp; Kitura Project Contributors</a>. All rights reserved. (Last updated: 2020-11-25)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
